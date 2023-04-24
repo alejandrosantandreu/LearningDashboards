@@ -3,7 +3,8 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  api: 'http://gessi-dashboard.essi.upc.edu:8888/api'
 };
 
 /*

@@ -1,0 +1,41 @@
+.default-page {
+    position: absolute;
+    right: 0px;
+    width: 300px;
+    font-family: var(--font-family-1);
+  }
+
+  .default-button {
+    position: relative;
+    top: 10px;
+    border-radius: 25px;
+    width: 150px;
+    height: 40px;
+    color: var(--color-3);
+    background-color: var(--color-2);
+    opacity: 80%;
+    
+  }
+
+  .default-text {
+    position: absolute;
+    font-weight: bold;
+    font-size: var(--font-size-1);
+    bottom: 5px;
+    left: 50px;
+  }
+
+
+  .default-logo {
+    font-size: var(--font-size-3);
+    position: absolute;
+    display: flex;
+    bottom: 4px;
+    left: 10px;
+  }
+
+  button:hover {
+    border-radius: 25px;
+    color: var(--color-3);
+    background-color: var(--color-6);
+  }

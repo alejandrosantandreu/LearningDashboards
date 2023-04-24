@@ -1,0 +1,11 @@
+<div class="header-page">
+    <div class="side-bar__separator"></div>
+    <i [routerLink]="'/home'" class="uil uil-estate default-home"></i>
+
+    <form [formGroup]="formSearch">
+        <input formControlName="search" type="text" placeholder="Search" class="input">
+    </form>
+
+    <i [routerLink]="'/setting'" class="uil uil-setting default-setting"></i>
+    <i [routerLink]="'/auth'" class="uil uil-user-circle default-user"></i>
+</div>

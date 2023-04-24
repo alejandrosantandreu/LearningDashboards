@@ -1,0 +1,14 @@
+<div class="default-page">
+  <h1>Assessment: Detailed Strategic Indicators</h1>
+  <app-group-selector></app-group-selector>
+  <ul class="graphic-type ">
+    <li *ngFor="let item of menuOptions">
+      <app-graphic-type [name]="item.name"></app-graphic-type>
+    </li>
+  </ul>
+  <div class="separator"></div>
+  <app-generic-graphic [title]="'Backlog management'"></app-generic-graphic>
+  <app-generic-graphic [title]="'Information completness'"></app-generic-graphic>
+  <app-generic-graphic [title]="'Repository contribution'"></app-generic-graphic>
+  <app-back-menu [routerLink]="'/assessment'"></app-back-menu>
+</div>

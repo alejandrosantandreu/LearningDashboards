@@ -1,0 +1,85 @@
+.side-bar {
+  width: 15.5rem;
+  height: 100%;
+  position: fixed;
+  top: 3.5rem;
+  left: 0;
+  padding: .5rem 1rem;
+  color: var(--color-1);
+  background-color: var(--color-4);
+}
+
+  #menu_gral ul {
+    list-style-type: none;
+    list-style: none;
+    padding: 0;
+    margin: .5em 0;
+  }
+
+  #menu_gral > ul li {
+    position: relative;
+  }
+
+  #menu_gral li span {
+    cursor: pointer;
+    display: block;
+    text-decoration: none;
+    font-size: 100%;
+    font-weight: 500;
+    line-height: 2.5rem;
+    color: var(--color-3);
+  }
+
+    #menu_gral li:hover span {
+      border-radius: 25px;
+      color: var(--color-5);
+      background-color: var(--color-2);
+    }
+
+  #menu_gral li ul {
+    position: absolute;
+    width: 0;
+    left: 100%;
+    top: 0;
+    overflow: hidden;
+  }
+
+  #menu_gral li:hover ul, #menu_gral li:focus ul {
+    width: 100%;
+    z-index: 5;
+    color: var(--color-3);
+    background-color: var(--color-2);
+  }
+
+  #menu_gral li li {
+    display: block;
+    width: 100%;
+  }
+
+  #menu_gral li:hover li span, #menu_gral li:focus li span {
+    border-radius: 0px;
+    font-size: 1rem;
+    line-height: 2rem;
+    border-top: 1px solid #e5e5e5;
+    color: var(--color-3);
+    background-color: var(--color-2);
+  }
+
+  #menu_gral li li span:hover {
+    color: var(--color-3);
+    background-color: var(--color-6);
+  }
+
+.side-bar__vertical {
+  border-right: solid 1px var(--color-7);
+  height: 90%;
+  position: fixed;
+  padding: 0rem 8.3rem;
+  top: 8%;
+  opacity: 1;
+}
+
+.logo {
+  position: absolute;
+  left: 90%;
+}

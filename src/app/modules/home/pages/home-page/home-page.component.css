@@ -1,0 +1,8 @@
+.home-wrapper {
+  margin: 0 0 2.5rem 17.5rem;
+  background: var(--color-4);
+  min-height: 120vh;
+  position: -webkit-sticky;
+  z-index: -2;
+}
+

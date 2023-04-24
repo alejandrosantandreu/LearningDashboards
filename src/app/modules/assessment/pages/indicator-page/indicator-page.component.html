@@ -1,0 +1,38 @@
+<div class="default-page">  
+  <h1>Assessment: Strategic Indicators</h1>
+
+  <app-group-selector></app-group-selector>
+
+  <ul class="graphic-type ">
+    <li *ngFor="let item of menuOptions">
+      <button class="type-button" (click)="type(item.name)">{{item.name}}</button> 
+    </li>
+  </ul>
+  <div class="separator"></div>
+
+  <div *ngIf="star">
+    <div echarts [options]="option1" class="demo-chart"></div>
+    <button class="default-button">
+      <span [routerLink]="'/assessment/indicator/detailed'" class="default-text">More details</span>
+    </button>
+    <div class="separator-graph"></div>
+  </div>
+  
+  <div *ngIf="bar">
+    <div echarts [options]="option2" class="demo-chart"></div>
+    <button class="default-button">
+      <span class="default-text">More details</span>
+    </button>
+    <div class="separator-graph"></div>
+  </div>
+  
+  <div>
+    <div echarts [options]="option3" class="demo-chart"></div>
+    <button class="default-button">
+      <span class="default-text">More details</span>
+    </button>
+    <div class="separator-graph"></div>
+  </div>    
+
+  <app-back-menu [routerLink]="'/assessment'"></app-back-menu>
+</div>
