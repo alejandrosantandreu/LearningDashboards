@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output,  EventEmitter  } from '@angular/core';
 
 @Component({
   selector: 'app-graphic-type',
@@ -8,10 +8,22 @@ import { Component, Input, OnInit } from '@angular/core';
 export class GraphicTypeComponent implements OnInit {
 
   @Input() name: '' = '';
+  graph: string = ''
+  @Output() newItemEvent = new EventEmitter<string>()
 
   constructor() { }
 
   ngOnInit(): void {
+    this.setGraph('Pie')
   }
+
+  setGraph(g: string): void {
+    this.graph = g
+    this.getGraph(this.graph)
+}
+
+getGraph(value: string) {
+  this.newItemEvent.emit(value);
+}
 
 }

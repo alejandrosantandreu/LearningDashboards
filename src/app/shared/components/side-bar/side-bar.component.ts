@@ -21,22 +21,22 @@ export class SideBarComponent implements OnInit {
         name: 'Strategic Indicators',
         router: ['/','assessment', 'indicator'],
       },
-      {
+      /*{
         name: 'Detailed Strategic Indicators',
         router: ['/', 'assessment', 'indicator', 'detailed']
-      },
+      },*/
       {
         name: 'Factors',
         router: ['/', 'assessment', 'factor'],
-      },
+      },/*
       {
         name: 'Detailed Factors',
         router: ['/', 'assessment', 'factor', 'detailed']
-      },
+      },*/
       {
         name: 'Metrics',
         router: ['/', 'assessment', 'metric']
-      },
+      },/*
       {
         name: 'Raw Data',
         router: ['/', 'assessment', 'data'],
@@ -44,7 +44,7 @@ export class SideBarComponent implements OnInit {
       {
         name: 'Quality Model',
         router: ['/', 'assessment', 'model'],
-      }
+      }*/
     ]
 
     this.mainMenu.prediction = [

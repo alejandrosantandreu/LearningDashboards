@@ -1,38 +1,62 @@
 <div class="default-page">  
   <h1>Assessment: Strategic Indicators</h1>
 
-  <app-group-selector></app-group-selector>
+  <app-group-selector (newItemEvent)= "selectGroup($event)"></app-group-selector>
+
+  <div class="dates">
+    <mat-form-field appearance="fill">
+      <mat-label>Enter a date range</mat-label>
+      <mat-date-range-input [rangePicker]="picker">
+        <input matStartDate placeholder="Start date">
+        <input matEndDate placeholder="End date">
+      </mat-date-range-input>
+      <mat-hint class="text">MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+  </div>
 
   <ul class="graphic-type ">
     <li *ngFor="let item of menuOptions">
-      <button class="type-button" (click)="type(item.name)">{{item.name}}</button> 
+      <app-graphic-type [name]="item.name" (newItemEvent)= "selectGraph($event)"></app-graphic-type>
     </li>
   </ul>
   <div class="separator"></div>
 
-  <div *ngIf="star">
-    <div echarts [options]="option1" class="demo-chart"></div>
-    <button class="default-button">
-      <span [routerLink]="'/assessment/indicator/detailed'" class="default-text">More details</span>
-    </button>
-    <div class="separator-graph"></div>
+
+  <div *ngIf="pie">
+    <ul class="graphics">
+      <li *ngFor="let item of options">
+        <div echarts [options]="item.graph" class="demo-chart"></div>
+        <button (click)="show()" class="default-button">
+          <span class="default-text">More details</span>
+        </button>
+        <div *ngIf="showDetails">
+          <div>{{item.det.desc}}</div>
+          <div>{{item.det.fecha}}</div>
+          <div>{{item.det.prop}}</div>
+        </div>
+        <div class="separator-graph"></div>
+      </li>
+    </ul>
   </div>
-  
+
   <div *ngIf="bar">
-    <div echarts [options]="option2" class="demo-chart"></div>
-    <button class="default-button">
-      <span class="default-text">More details</span>
-    </button>
-    <div class="separator-graph"></div>
-  </div>
-  
-  <div>
-    <div echarts [options]="option3" class="demo-chart"></div>
-    <button class="default-button">
-      <span class="default-text">More details</span>
-    </button>
-    <div class="separator-graph"></div>
-  </div>    
+    <ul class="graphics">
+      <li *ngFor="let item of options">
+        <div echarts [options]="item.graph" class="demo-chart"></div>
+        <button (click)="show()" class="default-button">
+          <span class="default-text">More details</span>
+        </button>
+        <div *ngIf="showDetails">
+          <div>{{item.det.desc}}</div>
+          <div>{{item.det.fecha}}</div>
+          <div>{{item.det.prop}}</div>
+        </div>
+        <div class="separator-graph"></div>
+      </li>
+    </ul>
+  </div>   
 
   <app-back-menu [routerLink]="'/assessment'"></app-back-menu>
 </div>

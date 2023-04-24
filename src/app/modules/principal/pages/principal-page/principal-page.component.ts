@@ -18,7 +18,7 @@ export class PrincipalPageComponent implements OnInit {
         router: ['/','assessment'],
         description: 'It shows the different variety of graphics and metrics of the selected project.'
       },
-      {
+      /*{
         name: 'Prediction',
         router: ['/', 'prediction',],
         description: ''
@@ -42,7 +42,7 @@ export class PrincipalPageComponent implements OnInit {
         name: 'Decision',
         router: ['/', 'decision'],
         description: ''
-      }
+      }*/
     ]
   }
 

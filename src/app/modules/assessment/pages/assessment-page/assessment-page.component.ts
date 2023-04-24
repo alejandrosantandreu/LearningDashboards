@@ -17,27 +17,27 @@ export class AssessmentPageComponent implements OnInit {
         name: 'Strategic Indicators',
         router: ['/','assessment', 'indicator'],
         desciption: ''
-      },
+      },/*
       {
         name: 'Detailed Strategic Indicators',
         router: ['/', 'assessment', 'indicator', 'detailed'],
         desciption: ''
-      },
+      },*/
       {
         name: 'Factors',
         router: ['/', 'assessment', 'factor'],
         desciption: ''
-      },
+      },/*
       {
         name: 'Detailed Factors',
         router: ['/', 'assessment', 'factor', 'detailed'],
         desciption: ''
-      },
+      },*/
       {
         name: 'Metrics',
         router: ['/', 'assessment', 'metric'],
         desciption: ''
-      },
+      },/*
       {
         name: 'Raw Data',
         router: ['/', 'assessment', 'data'],
@@ -47,7 +47,7 @@ export class AssessmentPageComponent implements OnInit {
         name: 'Quality Model',
         router: ['/', 'assessment', 'model'],
         desciption: ''
-      }
+      }*/
     ]
   }
 

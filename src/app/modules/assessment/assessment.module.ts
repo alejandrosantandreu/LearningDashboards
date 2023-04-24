@@ -11,6 +11,11 @@ import { DataPageComponent } from './pages/data-page/data-page.component';
 import { ModelPageComponent } from './pages/model-page/model-page.component';
 import { SharedModule } from '@shared/shared.module';
 import { AssessmentPageComponent } from './pages/assessment-page/assessment-page.component';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MaterialModule } from '../../../material.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {BrowserModule} from '@angular/platform-browser';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 
 @NgModule({
@@ -28,7 +33,12 @@ import { AssessmentPageComponent } from './pages/assessment-page/assessment-page
     CommonModule,
     AssessmentRoutingModule,
     SharedModule,
-    NgxEchartsModule
-  ]
+    NgxEchartsModule,
+    MatNativeDateModule,
+    MaterialModule,
+    FormsModule,
+    ReactiveFormsModule,
+  ],
+  bootstrap: [MetricPageComponent]
 })
 export class AssessmentModule { }
