@@ -3,16 +3,18 @@
   <app-group-selector (newItemEvent)= "selectGroup($event)"></app-group-selector>
 
   <div class="dates">
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="outline">
       <mat-label>Enter a date range</mat-label>
-      <mat-date-range-input [rangePicker]="picker">
-        <input matStartDate placeholder="Start date">
-        <input matEndDate placeholder="End date">
+      <mat-date-range-input class="input" [rangePicker]="picker">
+        <input #from matStartDate placeholder="Start date">
+        <input #to matEndDate placeholder="End date">
       </mat-date-range-input>
       <mat-hint class="text">MM/DD/YYYY – MM/DD/YYYY</mat-hint>
       <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-date-range-picker #picker></mat-date-range-picker>
     </mat-form-field>
+    <button (click)="sendDate()">Submit</button>
+    <button (click)="from.value=''" (click)="to.value=''" (click)="deleteDate()">Delete Date</button>
   </div>
 
   <ul class="graphic-type ">
@@ -27,13 +29,15 @@
     <ul class="graphics">
       <li *ngFor="let item of options">
         <div echarts [options]="item.graph" class="demo-chart"></div>
-        <button (click)="show()" class="default-button">
+        <button *ngIf="!existsDate" (click)="show()" class="default-button">
           <span class="default-text">More details</span>
         </button>
         <div *ngIf="showDetails">
-          <div>{{item.det.desc}}</div>
-          <div>{{item.det.fecha}}</div>
-          <div>{{item.det.prop}}</div>
+          <ul class="list">
+            <li *ngFor="let item of item.det">
+              <div echarts [options]="item" class="demo-chart"></div>
+            </li>
+          </ul>
         </div>
         <div class="separator-graph"></div>
       </li>
@@ -44,13 +48,15 @@
     <ul class="graphics">
       <li *ngFor="let item of options">
         <div echarts [options]="item.graph" class="demo-chart"></div>
-        <button (click)="show()" class="default-button">
+        <button *ngIf="!existsDate" (click)="show()" class="default-button">
           <span class="default-text">More details</span>
         </button>
         <div *ngIf="showDetails">
-          <div>{{item.det.desc}}</div>
-          <div>{{item.det.fecha}}</div>
-          <div>{{item.det.prop}}</div>
+          <ul class="list">
+            <li *ngFor="let item of item.det">
+              <div echarts [options]="item" class="demo-chart"></div>
+            </li>
+          </ul>
         </div>
         <div class="separator-graph"></div>
       </li>

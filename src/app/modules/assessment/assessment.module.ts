@@ -12,10 +12,13 @@ import { ModelPageComponent } from './pages/model-page/model-page.component';
 import { SharedModule } from '@shared/shared.module';
 import { AssessmentPageComponent } from './pages/assessment-page/assessment-page.component';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MaterialModule } from '../../../material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { PopupComponent } from './pages/popup/popup.component';
+import { AssessmentService } from '@modules/assessment/services/assessment.service';
 
 
 @NgModule({
@@ -27,7 +30,8 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     MetricPageComponent,
     DataPageComponent,
     ModelPageComponent,
-    AssessmentPageComponent
+    AssessmentPageComponent,
+    PopupComponent
   ],
   imports: [
     CommonModule,
@@ -38,7 +42,9 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
+    MatDialogModule
   ],
+  providers: [AssessmentService],
   bootstrap: [MetricPageComponent]
 })
 export class AssessmentModule { }

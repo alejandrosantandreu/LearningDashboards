@@ -22,6 +22,11 @@ export class AssessmentService {
     
   }
 
+  getAllMetric(project: string): Observable<MetricModel[]> {
+    const met = this.http.get<MetricModel[]>(`${this.URL}/metrics/current?prj=${project}`)
+    return met
+  }
+
   getMetricsDate$(project: string, from: string, to: string): Observable<MetricModel[]> {
     return this.http.get<MetricModel[]>(`${this.URL}/metrics/historical?prj=${project}&from=${from}&to=${to}`)
     
