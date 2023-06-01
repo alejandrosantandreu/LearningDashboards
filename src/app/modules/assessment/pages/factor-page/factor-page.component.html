@@ -13,7 +13,7 @@
       <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-date-range-picker #picker></mat-date-range-picker>
     </mat-form-field>
-    <button (click)="sendDate()">Submit</button>
+    <button (click)="sendDate()" (click)="selectGraph('Bar')">Submit</button>
     <button (click)="from.value=''" (click)="to.value=''" (click)="deleteDate()">Delete Date</button>
   </div>
 

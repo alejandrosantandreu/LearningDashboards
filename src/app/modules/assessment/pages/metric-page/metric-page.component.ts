@@ -134,7 +134,7 @@ export class MetricPageComponent implements OnInit {
 
   sendDate(): void {
     let doc = document.getElementsByTagName("input"); 
-    if(doc[0].value != '' && doc[1].value != null) {
+    if(doc[0].value != '' && doc[1].value != '') {
       let x = doc[0].value.split('/')
       let year = x[2]
       let day = x[1]
@@ -159,9 +159,30 @@ export class MetricPageComponent implements OnInit {
       }
       let to = year+'-'+month+'-'+day
 
-      this.getbyDates(from, to)
-      this.selectGroup(this.actualGroup)
-      this.existsDate = true
+      let fromsp = from.split('-')
+      let tosp = to.split('-')
+      console.log(parseInt(fromsp[0]))
+      console.log(parseInt(tosp[0]))
+      if(parseInt(fromsp[0]) > parseInt(tosp[0])) {
+        this.openDialog('wrong')
+        this.get()
+        this.selectGroup(this.actualGroup)
+      }
+      else if(parseInt(fromsp[0]) == parseInt(tosp[0]) && parseInt(fromsp[1]) > parseInt(tosp[1])) {
+        this.openDialog('wrong')
+        this.get()
+        this.selectGroup(this.actualGroup)
+      }
+      else if(parseInt(fromsp[0]) == parseInt(tosp[0]) && parseInt(fromsp[1]) == parseInt(tosp[1]) && parseInt(fromsp[2]) > parseInt(tosp[2])) {
+        this.openDialog('wrong')
+        this.get()
+        this.selectGroup(this.actualGroup)
+      }
+      else {
+        this.getbyDates(from, to)
+        this.selectGroup(this.actualGroup)
+        this.existsDate = true
+      }
     }
     else {
       this.openDialog('wrong')
@@ -301,7 +322,8 @@ export class MetricPageComponent implements OnInit {
         legend: {
           orient: 'horizontal',
           bottom: 'bottom',
-          itemGap: 20
+          itemGap: 20,
+          top: 'auto',
         },
         toolbox: {
           show: true,
@@ -317,7 +339,7 @@ export class MetricPageComponent implements OnInit {
         series: [
           {
             type: 'pie',
-            radius: '60%',
+            radius: '50%',
             label: {
               formatter: '{b|{b}：}{c}  {per|{d}%}  ',
               backgroundColor: '#F6F8FC',
@@ -340,7 +362,7 @@ export class MetricPageComponent implements OnInit {
               }
             },
             data: this.datos,
-            top: 40,
+            top: 20,
             emphasis: {
               itemStyle: {
                 shadowBlur: 10,
@@ -377,7 +399,8 @@ export class MetricPageComponent implements OnInit {
           data: this.names,
           orient: 'horizontal',
           bottom: 'bottom',
-          itemGap: 20
+          itemGap: 20,
+          top: 'auto',
         },
         toolbox: {
           show: true,

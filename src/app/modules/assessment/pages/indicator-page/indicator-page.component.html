@@ -14,7 +14,7 @@
       <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-date-range-picker #picker></mat-date-range-picker>
     </mat-form-field>
-    <button (click)="sendDate()">Submit</button>
+    <button (click)="sendDate()" (click)="selectGraph('Bar')">Submit</button>
     <button (click)="from.value=''" (click)="to.value=''" (click)="deleteDate()">Delete Date</button>
   </div>
 
@@ -30,7 +30,7 @@
     <ul class="graphics">
       <li *ngFor="let item of options">
         <div echarts [options]="item.graph" class="demo-chart"></div>
-        <button (click)="show()" class="default-button">
+        <button *ngIf="!existsDate" (click)="show()" class="default-button">
           <span class="default-text">More details</span>
         </button>
         <div *ngIf="showDetails">

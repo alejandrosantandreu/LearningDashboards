@@ -1,12 +1,14 @@
-<nav id="menu_gral">
-    <ul>
-        <li>
-            <span class="border">{{selectedGroup}}<i class="uil uil-angle-down logo"></i></span>
-            <ul>
-                <li *ngFor="let item of group">
-                    <span (click)="setGroup(item)">{{item}}</span>
-                </li>
-            </ul>
-        </li>
-    </ul>
-</nav>
+<div class="selector">
+    <nav id="menu_gral">
+        <ul>
+            <li>
+                <span class="border">{{selectedGroup}}<i class="uil uil-angle-down logo"></i></span>
+                <ul>
+                    <li *ngFor="let item of group">
+                        <span (click)="setGroup(item)">{{item}}</span>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+</div>

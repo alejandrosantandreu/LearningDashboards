@@ -13,7 +13,7 @@
       <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-date-range-picker #picker></mat-date-range-picker>
     </mat-form-field>
-    <button (click)="sendDate()">Submit</button>
+    <button (click)="sendDate()" (click)="selectGraph('Bar')">Submit</button>
     <button (click)="from.value=''" (click)="to.value=''" (click)="deleteDate()">Delete Date</button>
   </div>
 
@@ -22,8 +22,8 @@
       <app-graphic-type [name]="item.name" (newItemEvent)= "selectGraph($event)"></app-graphic-type>
     </li>
   </ul>
-  <div class="separator"></div>
 
+  <div class="separator"></div>
 
   <div *ngIf="pie">
     <ul class="graphics">
@@ -63,5 +63,6 @@
     </ul>
   </div>
 
-
+  <app-back-menu [routerLink]="'/assessment'"></app-back-menu>
+  
 </div>

@@ -1,7 +1,10 @@
+.selector {
+  bottom: 76%;
+}
+
 #menu_gral {
     position: absolute;
-    width: 20%;
-    bottom: 76%;
+    width: 25%;
   }
   
     #menu_gral ul {

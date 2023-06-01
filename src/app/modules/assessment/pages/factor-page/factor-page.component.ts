@@ -265,7 +265,8 @@ export class FactorPageComponent implements OnInit {
         legend: {
           orient: 'horizontal',
           bottom: 'bottom',
-          itemGap: 20
+          itemGap: 20,
+          top: 'auto',
         },
         toolbox: {
           show: true,
@@ -339,7 +340,8 @@ export class FactorPageComponent implements OnInit {
           data: this.names,
           orient: 'horizontal',
           bottom: 'bottom',
-          itemGap: 20
+          itemGap: 20,
+          top: 'auto',
         },
         toolbox: {
           show: true,
