@@ -5,6 +5,7 @@ import { Observable, of } from 'rxjs';
 import { MetricModel } from '@core/metrics.model';
 import { IndicatorModel } from '@core/indicator.model';
 import { QFModel } from '@core/qualityFactors.model';
+import { map, catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -17,37 +18,31 @@ export class AssessmentService {
     
   }
 
-  getAllMetrics$(project: string): Observable<MetricModel[]> {
+  getAllMetrics$(project: string): Observable<any> {
     return this.http.get<MetricModel[]>(`${this.URL}/metrics/current?prj=${project}`)
-    
   }
 
-  getAllMetric(project: string): Observable<MetricModel[]> {
-    const met = this.http.get<MetricModel[]>(`${this.URL}/metrics/current?prj=${project}`)
-    return met
-  }
-
-  getMetricsDate$(project: string, from: string, to: string): Observable<MetricModel[]> {
+  getMetricsDate$(project: string, from: string, to: string): Observable<any> {
     return this.http.get<MetricModel[]>(`${this.URL}/metrics/historical?prj=${project}&from=${from}&to=${to}`)
     
   }
 
-  getAllIndicators$(project: string): Observable<IndicatorModel[]> {
+  getAllIndicators$(project: string): Observable<any> {
     return this.http.get<IndicatorModel[]>(`${this.URL}/strategicIndicators/current?prj=${project}`)
     
   }
 
-  getIndicatorsDate$(project: string, from: string, to: string): Observable<IndicatorModel[]> {
+  getIndicatorsDate$(project: string, from: string, to: string): Observable<any> {
     return this.http.get<IndicatorModel[]>(`${this.URL}/strategicIndicators/historical?prj=${project}&from=${from}&to=${to}`)
     
   }
 
-  getAllFactors$(project: string): Observable<QFModel[]> {
+  getAllFactors$(project: string): Observable<any> {
     return this.http.get<QFModel[]>(`${this.URL}/qualityFactors/current?prj=${project}`)
     
   }
 
-  getFactorsDate$(project: string, from: string, to: string): Observable<QFModel[]> {
+  getFactorsDate$(project: string, from: string, to: string): Observable<any> {
     return this.http.get<QFModel[]>(`${this.URL}/qualityFactors/historical?prj=${project}&from=${from}&to=${to}`)
     
   }

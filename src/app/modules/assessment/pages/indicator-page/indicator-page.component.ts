@@ -14,10 +14,6 @@ export class IndicatorPageComponent implements OnInit {
 
   menuOptions: Array<any> = []
 
-  indicators1: Array<IndicatorModel> = []
-  indicators2: Array<IndicatorModel> = []
-  indicators3: Array<IndicatorModel> = []
-  indicators4: Array<IndicatorModel> = []
   indicators: Array<IndicatorModel> = []
 
   datos: any
@@ -59,8 +55,8 @@ export class IndicatorPageComponent implements OnInit {
         name: 'Bar',
       }
     ]
-    this.get()
-    this.openDialog('inicial')
+
+    this.get('asw11b')
   }
 
   openDialog(from: string) {
@@ -78,55 +74,18 @@ export class IndicatorPageComponent implements OnInit {
     }
   }
 
-  get(): any {
-    this.assessmentservice.getAllIndicators$('pes11a').subscribe( 
-      result => {
-          this.indicators1 = result; 
-      }
-    );
-    this.assessmentservice.getAllIndicators$('pes12a').subscribe( 
-      result => {
-          this.indicators2 = result; 
-      }
-    );
-    this.assessmentservice.getAllIndicators$('pes21a').subscribe( 
-      result => {
-          this.indicators3 = result; 
-      }
-    );
-    this.assessmentservice.getAllIndicators$('pes22a').subscribe( 
-      result => {
-          this.indicators4 = result; 
-      }
-    );
+  async get(g: string): Promise<any> {
+    this.indicators = await this.assessmentservice.getAllIndicators$(g).toPromise()
+    this.selectGroup(g)
   }
 
-  getbyDates(from: string, to: string): void {
-    this.assessmentservice.getIndicatorsDate$('pes11a', from, to).subscribe( 
-      result => {
-          this.indicators1 = result; 
-      }
-    );
-    this.assessmentservice.getIndicatorsDate$('pes12a', from, to).subscribe( 
-      result => {
-          this.indicators2 = result; 
-      }
-    );
-    this.assessmentservice.getIndicatorsDate$('pes21a', from, to).subscribe( 
-      result => {
-          this.indicators3 = result; 
-      }
-    );
-    this.assessmentservice.getIndicatorsDate$('pes22a', from, to).subscribe( 
-      result => {
-          this.indicators4 = result; 
-      }
-    );
+  async getbyDates(g: string, from: string, to: string): Promise<any> {
+    this.indicators = await this.assessmentservice.getIndicatorsDate$(g, from, to).toPromise()
+    this.selectGroup(g)
   }
 
   deleteDate(): void {
-    this.get()
-    this.selectGroup(this.actualGroup)
+    this.get(this.actualGroup)
     this.existsDate = false
   }
 
@@ -157,32 +116,36 @@ export class IndicatorPageComponent implements OnInit {
       }
       let to = year+'-'+month+'-'+day
 
-      this.getbyDates(from, to)
-      this.selectGroup(this.actualGroup)
-      this.existsDate = true
+      let fromsp = from.split('-')
+      let tosp = to.split('-')
+      console.log(parseInt(fromsp[0]))
+      console.log(parseInt(tosp[0]))
+      if(parseInt(fromsp[0]) > parseInt(tosp[0])) {
+        this.openDialog('wrong')
+        this.get(this.actualGroup)
+      }
+      else if(parseInt(fromsp[0]) == parseInt(tosp[0]) && parseInt(fromsp[1]) > parseInt(tosp[1])) {
+        this.openDialog('wrong')
+        this.get(this.actualGroup)
+      }
+      else if(parseInt(fromsp[0]) == parseInt(tosp[0]) && parseInt(fromsp[1]) == parseInt(tosp[1]) && parseInt(fromsp[2]) > parseInt(tosp[2])) {
+        this.openDialog('wrong')
+        this.get(this.actualGroup)
+      }
+      else {
+        this.getbyDates(this.actualGroup, from, to)
+        this.existsDate = true
+      }
     }
     else {
       this.openDialog('wrong')
-      this.get()
-      this.selectGroup(this.actualGroup)
+      this.get(this.actualGroup)
     }
   }
 
   selectGroup(g: string): void {
     this.actualGroup = g;
     this.options = []
-    if(this.actualGroup == 'pes11a') {
-      this.indicators = this.indicators1
-    }
-    else if(this.actualGroup == 'pes12a') {
-      this.indicators = this.indicators2
-    }
-    else if(this.actualGroup == 'pes21a') {
-      this.indicators = this.indicators3
-    }
-    else if(this.actualGroup == 'pes22a') {
-      this.indicators = this.indicators4  
-    }
 
     this.description()
 

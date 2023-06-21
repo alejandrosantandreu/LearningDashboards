@@ -46,6 +46,8 @@ import {MatTreeModule} from '@angular/material/tree';
 import {OverlayModule} from '@angular/cdk/overlay';
 import {CdkMenuModule} from '@angular/cdk/menu';
 import {DialogModule} from '@angular/cdk/dialog';
+import {CommonModule} from '@angular/common';
+
 
 @NgModule({
   exports: [
@@ -97,6 +99,7 @@ import {DialogModule} from '@angular/cdk/dialog';
     PortalModule,
     ScrollingModule,
     DialogModule,
+    CommonModule,
   ]
 })
 export class MaterialModule {}

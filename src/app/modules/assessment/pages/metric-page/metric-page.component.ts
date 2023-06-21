@@ -10,16 +10,13 @@ import { PopupComponent } from '../popup/popup.component';
 @Component({
   selector: 'app-metric-page',
   templateUrl: './metric-page.component.html',
+  providers: [AssessmentService],
   styleUrls: ['./metric-page.component.css']
 })
 export class MetricPageComponent implements OnInit {
 
   menuOptions: Array<any> = []
 
-  metrics1: Array<MetricModel> = []
-  metrics2: Array<MetricModel> = []
-  metrics3: Array<MetricModel> = []
-  metrics4: Array<MetricModel> = []
   metrics: Array<MetricModel> = []
 
   datos: any
@@ -60,8 +57,7 @@ export class MetricPageComponent implements OnInit {
         name: 'Bar',
       }
     ]
-    this.get()
-    this.openDialog('inicial')
+  
   }
 
   openDialog(from: string) {
@@ -80,55 +76,18 @@ export class MetricPageComponent implements OnInit {
   }
 
 
-  get(): void {
-    this.assessmentservice.getAllMetrics$('pes11a').subscribe( 
-      result => {
-          this.metrics1 = result; 
-      }
-    );
-    this.assessmentservice.getAllMetrics$('pes12a').subscribe( 
-      result => {
-          this.metrics2 = result; 
-      }
-    );
-    this.assessmentservice.getAllMetrics$('pes21a').subscribe( 
-      result => {
-          this.metrics3 = result; 
-      }
-    );
-    this.assessmentservice.getAllMetrics$('pes22a').subscribe( 
-      result => {
-          this.metrics4 = result; 
-      }
-    );
+  async get(g: string): Promise<any> {
+    this.metrics = await this.assessmentservice.getAllMetrics$(g).toPromise()
+    this.selectGroup(g)
   }
 
-  getbyDates(from: string, to: string): void {
-    this.assessmentservice.getMetricsDate$('pes11a', from, to).subscribe( 
-      result => {
-          this.metrics1 = result; 
-      }
-    );
-    this.assessmentservice.getMetricsDate$('pes12a', from, to).subscribe( 
-      result => {
-          this.metrics2 = result; 
-      }
-    );
-    this.assessmentservice.getMetricsDate$('pes21a', from, to).subscribe( 
-      result => {
-          this.metrics3 = result; 
-      }
-    );
-    this.assessmentservice.getMetricsDate$('pes22a', from, to).subscribe( 
-      result => {
-          this.metrics4 = result; 
-      }
-    );
+  async getbyDates(g: string, from: string, to: string): Promise<any> {
+    this.metrics = await this.assessmentservice.getMetricsDate$(g, from, to).toPromise()
+    this.selectGroup(g)
   }
 
   deleteDate(): void {
-    this.get()
-    this.selectGroup(this.actualGroup)
+    this.get(this.actualGroup)
     this.existsDate = false
   }
 
@@ -165,47 +124,30 @@ export class MetricPageComponent implements OnInit {
       console.log(parseInt(tosp[0]))
       if(parseInt(fromsp[0]) > parseInt(tosp[0])) {
         this.openDialog('wrong')
-        this.get()
-        this.selectGroup(this.actualGroup)
+        this.get(this.actualGroup)
       }
       else if(parseInt(fromsp[0]) == parseInt(tosp[0]) && parseInt(fromsp[1]) > parseInt(tosp[1])) {
         this.openDialog('wrong')
-        this.get()
-        this.selectGroup(this.actualGroup)
+        this.get(this.actualGroup)
       }
       else if(parseInt(fromsp[0]) == parseInt(tosp[0]) && parseInt(fromsp[1]) == parseInt(tosp[1]) && parseInt(fromsp[2]) > parseInt(tosp[2])) {
         this.openDialog('wrong')
-        this.get()
-        this.selectGroup(this.actualGroup)
+        this.get(this.actualGroup)
       }
       else {
-        this.getbyDates(from, to)
-        this.selectGroup(this.actualGroup)
+        this.getbyDates(this.actualGroup, from, to)
         this.existsDate = true
       }
     }
     else {
       this.openDialog('wrong')
-      this.get()
-      this.selectGroup(this.actualGroup)
+      this.get(this.actualGroup)
     }
   }
 
   selectGroup(g: string): void {
     this.actualGroup = g;
     this.options = []
-    if(this.actualGroup == 'pes11a') {
-      this.metrics = this.metrics1
-    }
-    else if(this.actualGroup == 'pes12a') {
-      this.metrics = this.metrics2
-    }
-    else if(this.actualGroup == 'pes21a') {
-      this.metrics = this.metrics3
-    }
-    else if(this.actualGroup == 'pes22a') {
-      this.metrics = this.metrics4  
-    }
 
     this.description()
     for(let j=0; j < this.qF.length; j++){

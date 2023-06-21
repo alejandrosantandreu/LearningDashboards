@@ -60,8 +60,7 @@ export class FactorPageComponent implements OnInit {
         name: 'Bar',
       }
     ]
-    this.get()
-    this.openDialog('inicial')
+    this.get('asw11b')
   }
 
   openDialog(from: string) {
@@ -79,55 +78,18 @@ export class FactorPageComponent implements OnInit {
     }
   }
 
-  get(): any {
-    this.assessmentservice.getAllFactors$('pes11a').subscribe( 
-      result => {
-          this.qf1 = result; 
-      }
-    );
-    this.assessmentservice.getAllFactors$('pes12a').subscribe( 
-      result => {
-          this.qf2 = result; 
-      }
-    );
-    this.assessmentservice.getAllFactors$('pes21a').subscribe( 
-      result => {
-          this.qf3 = result; 
-      }
-    );
-    this.assessmentservice.getAllFactors$('pes22a').subscribe( 
-      result => {
-          this.qf4 = result; 
-      }
-    );
+  async get(g: string): Promise<any> {
+    this.qf = await this.assessmentservice.getAllFactors$(g).toPromise()
+    this.selectGroup(g)
   }
 
-  getbyDates(from: string, to: string): void {
-    this.assessmentservice.getFactorsDate$('pes11a', from, to).subscribe( 
-      result => {
-          this.qf1 = result; 
-      }
-    );
-    this.assessmentservice.getFactorsDate$('pes12a', from, to).subscribe( 
-      result => {
-          this.qf2 = result; 
-      }
-    );
-    this.assessmentservice.getFactorsDate$('pes21a', from, to).subscribe( 
-      result => {
-          this.qf3 = result; 
-      }
-    );
-    this.assessmentservice.getFactorsDate$('pes22a', from, to).subscribe( 
-      result => {
-          this.qf4 = result; 
-      }
-    );
+  async getbyDates(g: string, from: string, to: string): Promise<any> {
+    this.qf = await this.assessmentservice.getFactorsDate$(g, from, to).toPromise()
+    this.selectGroup(g)
   }
 
   deleteDate(): void {
-    this.get()
-    this.selectGroup(this.actualGroup)
+    this.get(this.actualGroup)
     this.existsDate = false
   }
 
@@ -158,32 +120,36 @@ export class FactorPageComponent implements OnInit {
       }
       let to = year+'-'+month+'-'+day
 
-      this.getbyDates(from, to)
-      this.selectGroup(this.actualGroup)
-      this.existsDate = true
+      let fromsp = from.split('-')
+      let tosp = to.split('-')
+      console.log(parseInt(fromsp[0]))
+      console.log(parseInt(tosp[0]))
+      if(parseInt(fromsp[0]) > parseInt(tosp[0])) {
+        this.openDialog('wrong')
+        this.get(this.actualGroup)
+      }
+      else if(parseInt(fromsp[0]) == parseInt(tosp[0]) && parseInt(fromsp[1]) > parseInt(tosp[1])) {
+        this.openDialog('wrong')
+        this.get(this.actualGroup)
+      }
+      else if(parseInt(fromsp[0]) == parseInt(tosp[0]) && parseInt(fromsp[1]) == parseInt(tosp[1]) && parseInt(fromsp[2]) > parseInt(tosp[2])) {
+        this.openDialog('wrong')
+        this.get(this.actualGroup)
+      }
+      else {
+        this.getbyDates(this.actualGroup, from, to)
+        this.existsDate = true
+      }
     }
     else {
       this.openDialog('wrong')
-      this.get()
-      this.selectGroup(this.actualGroup)
+      this.get(this.actualGroup)
     }
   }
 
   selectGroup(g: string): void {
     this.actualGroup = g;
     this.options = []
-    if(this.actualGroup == 'pes11a') {
-      this.qf = this.qf1
-    }
-    else if(this.actualGroup == 'pes12a') {
-      this.qf = this.qf2
-    }
-    else if(this.actualGroup == 'pes21a') {
-      this.qf = this.qf3
-    }
-    else if(this.actualGroup == 'pes22a') {
-      this.qf = this.qf4  
-    }
 
     this.description()
 
