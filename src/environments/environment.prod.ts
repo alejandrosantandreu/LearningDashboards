@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  api: 'http://gessi-dashboard.essi.upc.edu:8888/api'
+  api: 'https://backend-learning-dashboard.adaptable.app'
 };
