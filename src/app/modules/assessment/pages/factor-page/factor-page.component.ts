@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { AssessmentService } from '@modules/assessment/services/assessment.service';
 import { HttpClient } from '@angular/common/http';
 import { QFModel } from '@core/qualityFactors.model';
-import { MatDialog } from '@angular/material/dialog';
-import { PopupComponent } from '../popup/popup.component';
 
 
 @Component({
@@ -49,7 +47,7 @@ export class FactorPageComponent implements OnInit {
   date: string=''
   existsDate: Boolean = false
 
-  constructor(private assessmentservice: AssessmentService, private http: HttpClient, private dialogRef: MatDialog) { }
+  constructor(private assessmentservice: AssessmentService, private http: HttpClient) { }
 
   ngOnInit(): void {
     this.menuOptions = [
@@ -61,21 +59,6 @@ export class FactorPageComponent implements OnInit {
       }
     ]
     this.get('asw11b')
-  }
-
-  openDialog(from: string) {
-    if(from == 'inicial') {
-      this.dialogRef.open(PopupComponent,
-        {
-          data : 'Select a group'
-        });
-    }
-    else if (from == 'wrong') {
-      this.dialogRef.open(PopupComponent,
-        {
-          data : 'Wrong dates'
-        });
-    }
   }
 
   async get(g: string): Promise<any> {
@@ -125,15 +108,12 @@ export class FactorPageComponent implements OnInit {
       console.log(parseInt(fromsp[0]))
       console.log(parseInt(tosp[0]))
       if(parseInt(fromsp[0]) > parseInt(tosp[0])) {
-        this.openDialog('wrong')
         this.get(this.actualGroup)
       }
       else if(parseInt(fromsp[0]) == parseInt(tosp[0]) && parseInt(fromsp[1]) > parseInt(tosp[1])) {
-        this.openDialog('wrong')
         this.get(this.actualGroup)
       }
       else if(parseInt(fromsp[0]) == parseInt(tosp[0]) && parseInt(fromsp[1]) == parseInt(tosp[1]) && parseInt(fromsp[2]) > parseInt(tosp[2])) {
-        this.openDialog('wrong')
         this.get(this.actualGroup)
       }
       else {
@@ -142,7 +122,6 @@ export class FactorPageComponent implements OnInit {
       }
     }
     else {
-      this.openDialog('wrong')
       this.get(this.actualGroup)
     }
   }

@@ -3,18 +3,7 @@
   <app-group-selector (newItemEvent)= "get($event)"></app-group-selector>
 
   <div class="dates">
-    <mat-form-field appearance="outline">
-      <mat-label>Enter a date range</mat-label>
-      <mat-date-range-input class="input" [rangePicker]="picker">
-        <input #from matStartDate placeholder="Start date">
-        <input #to matEndDate placeholder="End date">
-      </mat-date-range-input>
-      <mat-hint class="text">MM/DD/YYYY – MM/DD/YYYY</mat-hint>
-      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-date-range-picker #picker></mat-date-range-picker>
-    </mat-form-field>
-    <button (click)="sendDate()" (click)="selectGraph('Bar')">Submit</button>
-    <button (click)="from.value=''" (click)="to.value=''" (click)="deleteDate()">Delete Date</button>
+    
   </div>
 
   <ul class="graphic-type ">

@@ -7,11 +7,7 @@ import { FactorPageComponent } from './pages/factor-page/factor-page.component';
 import { MetricPageComponent } from './pages/metric-page/metric-page.component';
 import { SharedModule } from '@shared/shared.module';
 import { AssessmentPageComponent } from './pages/assessment-page/assessment-page.component';
-import { MatNativeDateModule } from '@angular/material/core';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MaterialModule } from '../../../material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { PopupComponent } from './pages/popup/popup.component';
 import { AssessmentService } from '@modules/assessment/services/assessment.service';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -22,18 +18,14 @@ import { HttpClientModule } from '@angular/common/http';
     FactorPageComponent,
     MetricPageComponent,
     AssessmentPageComponent,
-    PopupComponent
   ],
   imports: [
     CommonModule,
     AssessmentRoutingModule,
     SharedModule,
     NgxEchartsModule,
-    MatNativeDateModule,
-    MaterialModule,
     FormsModule,
     ReactiveFormsModule,
-    MatDialogModule,
     HttpClientModule
   ],
   providers: [AssessmentService],
