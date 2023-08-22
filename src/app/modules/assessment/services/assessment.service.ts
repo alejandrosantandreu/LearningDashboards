@@ -29,14 +29,14 @@ export class AssessmentService {
   private httpOptions = {
     headers : new HttpHeaders({
       accept: 'text/html, application/xhtml+xml, */*',
-      'Content-Type': 'application/x-www-form-urlencoded',
+      'Content-Type': 'application/json',
     }),
     responseType: 'text',
   }
 
   private headers = new HttpHeaders({
     accept: 'text/html, application/xhtml+xml, */*',
-    'Content-Type': 'application/x-www-form-urlencoded',
+    'Content-Type': 'application/json',
     'Acces-Control-Allow-Origin': '*',
     'Acces-Control-Allow-Methods': 'GET, POST, PUT, OPTIONS, DELETE',
     'Acces-Control-Allow-Headers': 
@@ -46,14 +46,14 @@ export class AssessmentService {
   getAllMetrics$(project: string): Observable<any> {
     return this.http.get<MetricModel[]>(`api/metrics/${project}`,
     {
-      headers: this.headers
+      headers: this.headers,
     })
   }
 
   getMetricsDate$(project: string, from: string, to: string): Observable<any> {
     return this.http.get<MetricModel[]>(`api/metrics/${project}/${from}/${to}`,
     {
-      headers: this.headers
+      headers: this.headers,
     })
     
   }
@@ -61,7 +61,7 @@ export class AssessmentService {
   getAllIndicators$(project: string): Observable<any> {
     return this.http.get<IndicatorModel[]>(`api/strategicIndicators/${project}`,
     {
-      headers: this.headers
+      headers: this.headers,
     })
     
   }
@@ -69,7 +69,7 @@ export class AssessmentService {
   getIndicatorsDate$(project: string, from: string, to: string): Observable<any> {
     return this.http.get<IndicatorModel[]>(`api/strategicIndicators/${project}/${from}/${to}`,
     {
-      headers: this.headers
+      headers: this.headers,
     })
     
   }
@@ -77,7 +77,7 @@ export class AssessmentService {
   getAllFactors$(project: string): Observable<any> {
     return this.http.get<QFModel[]>(`api/qualityFactors/${project}`,
     {
-      headers: this.headers
+      headers: this.headers,
     })
     
   }
@@ -85,7 +85,7 @@ export class AssessmentService {
   getFactorsDate$(project: string, from: string, to: string): Observable<any> {
     return this.http.get<QFModel[]>(`api/qualityFactors/${project}/${from}/${to}`,
     {
-      headers: this.headers
+      headers: this.headers,
     })
     
   }

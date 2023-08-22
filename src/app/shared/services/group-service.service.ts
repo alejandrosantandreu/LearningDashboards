@@ -25,7 +25,7 @@ export class GroupServiceService {
   private httpOptions = {
     headers : new HttpHeaders({
       accept: 'text/html, application/xhtml+xml, */*',
-      'Content-Type': 'application/x-www-form-urlencoded',
+      'Content-Type': 'application/json',
     }),
     responseType: 'text',
   }
@@ -33,7 +33,7 @@ export class GroupServiceService {
   getAllProjects$(): Observable<any> {
     let headers = new HttpHeaders({
       accept: 'text/html, application/xhtml+xml, */*',
-      'Content-Type': 'application/x-www-form-urlencoded',
+      'Content-Type': 'application/json',
       'Acces-Control-Allow-Origin': '*',
       'Acces-Control-Allow-Methods': 'GET, POST, PUT, OPTIONS, DELETE',
       'Acces-Control-Allow-Headers': 
@@ -42,7 +42,7 @@ export class GroupServiceService {
   
     return this.http.get<any>(`api/projects`,
     {
-      headers: headers
+      headers: headers,
     })
   }
 }
