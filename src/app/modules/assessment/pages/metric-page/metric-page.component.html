@@ -1,8 +1,9 @@
 <div class="default-page">
   <h1>Assessment: Metrics</h1>
   <app-group-selector (newItemEvent)= "get($event)"></app-group-selector>
-
+  <p-button class="p-button">hola</p-button>
   <div class="dates">
+    <p-calendar [(ngModel)]="date" class="p-calendar.p-calendar-clearable"></p-calendar>
     
   </div>
 

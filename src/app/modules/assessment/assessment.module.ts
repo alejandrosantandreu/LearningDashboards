@@ -10,6 +10,8 @@ import { AssessmentPageComponent } from './pages/assessment-page/assessment-page
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AssessmentService } from '@modules/assessment/services/assessment.service';
 import { HttpClientModule } from '@angular/common/http';
+import { CalendarModule } from 'primeng/calendar';
+import { ButtonModule } from 'primeng/button';
 
 
 @NgModule({
@@ -26,7 +28,9 @@ import { HttpClientModule } from '@angular/common/http';
     NgxEchartsModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    CalendarModule,
+    ButtonModule
   ],
   providers: [AssessmentService],
   bootstrap: [MetricPageComponent]

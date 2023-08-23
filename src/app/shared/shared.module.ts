@@ -1,6 +1,5 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SideBarComponent } from './components/side-bar/side-bar.component';
 import { HeaderUserComponent } from './components/header-user/header-user.component';
 import { GenericGraphicComponent } from './components/generic-graphic/generic-graphic.component';
 import { HomeOptionComponent } from './components/home-option/home-option.component';
@@ -9,32 +8,41 @@ import { RouterModule } from '@angular/router';
 import { GraphicTypeComponent } from './components/graphic-type/graphic-type.component';
 import { GroupSelectorComponent } from './components/group-selector/group-selector.component';
 import { ReactiveFormsModule } from '@angular/forms';
-
+import { SidebarModule } from 'primeng/sidebar';
+import { ButtonModule } from 'primeng/button';
+import { FooterComponent } from './components/footer/footer.component';
+import { MenubarModule } from 'primeng/menubar';
 
 
 @NgModule({
   declarations: [
-    SideBarComponent,
     HeaderUserComponent,
     GenericGraphicComponent,
     HomeOptionComponent,
     BackMenuComponent,
     GraphicTypeComponent,
-    GroupSelectorComponent
+    GroupSelectorComponent,
+    FooterComponent
   ],
   imports: [
     CommonModule,
     RouterModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SidebarModule,
+    ButtonModule,
+    MenubarModule
   ],
   exports: [
-    SideBarComponent,
     HeaderUserComponent,
     GenericGraphicComponent,
     HomeOptionComponent,
     BackMenuComponent,
     GraphicTypeComponent,
-    GroupSelectorComponent
-  ]
+    GroupSelectorComponent,
+    FooterComponent
+  ],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA
+  ],
 })
 export class SharedModule { }
