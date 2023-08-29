@@ -30,7 +30,7 @@ export class GroupServiceService {
     responseType: 'text',
   }
 
-  getAllProjects$(): Observable<any> {
+  getAllProjects(): Observable<any[]> {
     let headers = new HttpHeaders({
       accept: 'text/html, application/xhtml+xml, */*',
       'Content-Type': 'application/json',
@@ -40,9 +40,10 @@ export class GroupServiceService {
         'Content-Type, Acces-Control-Allow-Headers, Authorization, X-Request-With',
     });
   
-    return this.http.get<any>(`api/projects`,
+    /*return this.http.get<any[]>(`api/projects`,
     {
       headers: headers,
-    })
+    })*/
+    return this.http.get<any[]>(`api/projects`);
   }
 }

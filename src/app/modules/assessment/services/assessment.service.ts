@@ -43,7 +43,14 @@ export class AssessmentService {
       'Content-Type, Acces-Control-Allow-Headers, Authorization, X-Request-With',
   });
 
-  getAllMetrics$(project: string): Observable<any> {
+  getCategories(): Observable<any[]> {
+    return this.http.get<any[]>(`api/categories`,
+    {
+      headers: this.headers,
+    })
+  }
+
+  getAllMetrics(project: string): Observable<any[]> {
     return this.http.get<MetricModel[]>(`api/metrics/${project}`,
     {
       headers: this.headers,

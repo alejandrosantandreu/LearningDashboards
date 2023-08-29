@@ -1,7 +1,20 @@
-.titles {
-    text-align: center;
-    padding-top: 120px;
-  }
+
+.btnSol {
+  width: 100%;
+}
+
+h1,
+h2 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 28px;
+}
+
+h2 {
+  font-size: 18px;
+}
   
   .list {
     display: grid;
@@ -9,4 +22,40 @@
     margin: 0;
     gap: 6rem;
     grid-template-columns: repeat(3, minmax(100px, 1fr));
+  }
+
+  .info {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 200px;
+    height: auto;
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+  }
+
+  .login-box {
+    background-color: #eee;
+    border: 2px solid #333;
+    border-radius: 5px;
+    padding: 2.3rem;
+    text-align: center;
+  }
+  
+  .login-box > div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2em;
+    justify-content: center;
+    padding: 2rem 0;
+  }
+  
+  a {
+    background-color: #908375;
+    color: #fff;
+    font-size: 22px;
+    padding: 0.5em 1em;
+    border: none;
+    border-radius: 5px;
   }

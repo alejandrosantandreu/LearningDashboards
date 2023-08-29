@@ -60,3 +60,8 @@
 .pad {
   padding: 0 16px;
 }
+
+.act {
+  line-height: 58px;
+  border-bottom: 3px solid #c00000;
+}

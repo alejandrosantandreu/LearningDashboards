@@ -12,6 +12,11 @@ import { AssessmentService } from '@modules/assessment/services/assessment.servi
 import { HttpClientModule } from '@angular/common/http';
 import { CalendarModule } from 'primeng/calendar';
 import { ButtonModule } from 'primeng/button';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { AccordionModule } from 'primeng/accordion';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { ProgressBarModule } from 'primeng/progressbar';
+import { ToastModule } from 'primeng/toast';
 
 
 @NgModule({
@@ -30,7 +35,12 @@ import { ButtonModule } from 'primeng/button';
     ReactiveFormsModule,
     HttpClientModule,
     CalendarModule,
-    ButtonModule
+    ButtonModule,
+    MultiSelectModule,
+    AccordionModule,
+    RadioButtonModule,
+    ProgressBarModule,
+    ToastModule
   ],
   providers: [AssessmentService],
   bootstrap: [MetricPageComponent]

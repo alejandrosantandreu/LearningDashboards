@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-principal-page',
@@ -8,8 +8,13 @@ import { Component, OnInit } from '@angular/core';
 export class PrincipalPageComponent implements OnInit {
   options: any;
   menuOptions: Array<any> = []
+  login: any = true
 
-  constructor() { }
+  constructor(private cdref: ChangeDetectorRef) { }
+
+  ngAfterContentChecked() {
+    this.cdref.detectChanges();
+  }
 
   ngOnInit(): void {
     this.menuOptions = [
@@ -18,31 +23,6 @@ export class PrincipalPageComponent implements OnInit {
         router: ['/','assessment'],
         description: 'It shows the different variety of graphics and metrics of the selected project.'
       },
-      /*{
-        name: 'Prediction',
-        router: ['/', 'prediction',],
-        description: ''
-      },
-      {
-        name: 'Simulation',
-        router: ['/', 'simulation'],
-        description: ''
-      },
-      {
-        name: 'Alerts',
-        router: ['/', 'alert'],
-        description: ''
-      },
-      {
-        name: 'Quality Requirements',
-        router: ['/', 'requirement'],
-        description: ''
-      },
-      {
-        name: 'Decision',
-        router: ['/', 'decision'],
-        description: ''
-      }*/
     ]
   }
 

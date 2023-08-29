@@ -1,14 +1,9 @@
 <div class="selector">
-    <nav id="menu_gral">
-        <ul>
-            <li>
-                <span class="border">{{selectedGroup}}<i class="uil uil-angle-down logo"></i></span>
-                <ul>
-                    <li *ngFor="let item of group">
-                        <span (click)="setGroup(item)">{{item}}</span>
-                    </li>
-                </ul>
-            </li>
-        </ul>
-    </nav>
+    <p-multiSelect  
+        [options]="data"  
+        (onChange)="setGroup($event)"
+        defaultLabel="Select a Group" 
+        optionLabel="name" 
+        display="chip">
+    </p-multiSelect>
 </div>

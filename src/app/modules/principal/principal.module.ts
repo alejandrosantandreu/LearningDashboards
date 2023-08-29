@@ -4,6 +4,7 @@ import { NgxEchartsModule } from 'ngx-echarts';
 import { PrincipalRoutingModule } from './principal-routing.module';
 import { PrincipalPageComponent } from './pages/principal-page/principal-page.component';
 import { SharedModule } from '@shared/shared.module';
+import { DialogModule } from 'primeng/dialog';
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import { SharedModule } from '@shared/shared.module';
     CommonModule,
     PrincipalRoutingModule,
     SharedModule,
-    NgxEchartsModule
+    NgxEchartsModule,
+    DialogModule
   ]
 })
 export class PrincipalModule { }

@@ -12,6 +12,8 @@ import { SidebarModule } from 'primeng/sidebar';
 import { ButtonModule } from 'primeng/button';
 import { FooterComponent } from './components/footer/footer.component';
 import { MenubarModule } from 'primeng/menubar';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { DropdownModule } from 'primeng/dropdown';
 
 
 @NgModule({
@@ -30,7 +32,9 @@ import { MenubarModule } from 'primeng/menubar';
     ReactiveFormsModule,
     SidebarModule,
     ButtonModule,
-    MenubarModule
+    MenubarModule,
+    MultiSelectModule,
+    DropdownModule
   ],
   exports: [
     HeaderUserComponent,

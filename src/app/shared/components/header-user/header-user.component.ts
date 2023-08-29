@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header-user',
@@ -10,11 +11,22 @@ export class HeaderUserComponent implements OnInit {
 
   formSearch: FormGroup = new FormGroup({});
 
+  homeopt: any = []
   stOptions: any = []
   fOptions: any = []
   mOptions: any = []
 
-  constructor() { }
+  home = true
+  st = false
+  fact = false
+  met = false
+
+  constructor(private router: Router, private cdref: ChangeDetectorRef,) { }
+
+  ngAfterContentChecked() {
+    this.changeActive()
+    this.cdref.detectChanges();
+  }
 
   ngOnInit(): void {
     this.formSearch = new FormGroup(
@@ -24,6 +36,16 @@ export class HeaderUserComponent implements OnInit {
         ])
       }
     )
+
+    this.homeopt = [
+      {
+        label: "Home",
+        routerLink: ['/home'],
+            routerLinkActiveOptions: {
+              exact: true
+            },
+      }
+    ];
 
     this.stOptions = [
       {
@@ -90,6 +112,35 @@ export class HeaderUserComponent implements OnInit {
         ]
       }
     ];
+
+    this.changeActive()
+  }
+
+  changeActive() {
+    if(this.router.url.includes('indicator')) {
+      this.st = true
+      this.home = false
+      this.fact = false
+      this.met = false
+    }
+    else if(this.router.url.includes('factor')) {
+      this.st = false
+      this.home = false
+      this.fact = true
+      this.met = false
+    }
+    else if(this.router.url.includes('metric')) {
+      this.st = false
+      this.home = false
+      this.fact = false
+      this.met = true
+    }
+    else {
+      this.st = false
+      this.home = true
+      this.fact = false
+      this.met = false
+    }
   }
 
 }
