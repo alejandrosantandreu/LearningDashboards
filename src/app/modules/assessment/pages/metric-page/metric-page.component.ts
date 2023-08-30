@@ -123,9 +123,6 @@ export class MetricPageComponent implements OnInit {
   barSeries: Array<any> = []
   stackedSeries: Array<any> = []
 
-  showDetails: boolean = false
-
-
   constructor(private assessmentservice: AssessmentService, private http: HttpClient) {}
 
   ngOnInit(): void {
@@ -306,7 +303,7 @@ export class MetricPageComponent implements OnInit {
         show: true,
         orient: 'vertical',
         left: 'right',
-        top: 'center',
+        top: 'bottom',
         feature: {
           mark: { show: true },
           restore: { show: true },
@@ -369,7 +366,7 @@ export class MetricPageComponent implements OnInit {
         show: true,
         orient: 'vertical',
         left: 'right',
-        top: 'center',
+        top: 'bottom',
         feature: {
           mark: { show: true },
           restore: { show: true },
@@ -416,7 +413,7 @@ export class MetricPageComponent implements OnInit {
         show: true,
         orient: 'vertical',
         left: 'right',
-        top: 'center',
+        top: 'bottom',
         feature: {
           mark: { show: true },
           restore: { show: true },

@@ -3,6 +3,11 @@ import { AssessmentService } from '@modules/assessment/services/assessment.servi
 import { HttpClient } from '@angular/common/http';
 import { IndicatorModel } from '@core/indicator.model';
 
+interface opt {
+  name: string,
+  description: string
+}
+
 @Component({
   selector: 'app-indicator-page',
   templateUrl: './indicator-page.component.html',
@@ -10,477 +15,250 @@ import { IndicatorModel } from '@core/indicator.model';
 })
 export class IndicatorPageComponent implements OnInit {
 
-  menuOptions: Array<any> = []
+  nameDesc: opt[] = [
+    {
+      name: 'Backlog Management',
+      description: ''
+    },
+    {
+      name: 'Information Completeness',
+      description: ''
+    },
+    {
+      name: 'Repository Contribution',
+      description: ''
+    }
+  ]
 
-  indicators: Array<IndicatorModel> = []
+  strategicIndicators!: IndicatorModel[]
+  categories: any[] = []
+  selectedCat: string = ''
+  groupCat: any[] = []
+  showedOpt: opt[] = []
+  groups: Array<string> = []
+
+  graphics: Array<any> = []
+  stacked: any
 
   datos: any
   dataNames: Array<any> = []
-  dataValues: Array<any> = []
-  d: any
-  dataDate: Array<any> = []
-  names: Array<any> = []
-  barSeries: Array<any> = []
-
-  pie: boolean = true;
-  bar: boolean = false;
-  type: string = '' 
-  actualGroup: string =''
-  qF: any
-  title: Array<any> = []
-  total: number = 1;
-  present: Boolean = false;
-
-  options: Array<any> = []
-  individuals: Array<any> = []
-  option0: any;
-  option: any;
-  opt: any;
-
-  showDetails: boolean = false
-
-  date: string=''
-  existsDate: Boolean = false
+  rationale: Array<any> = []
+  stackedSeries: Array<any> = []
 
   constructor(private assessmentservice: AssessmentService, private http: HttpClient) { }
 
   ngOnInit(): void {
-    this.menuOptions = [
-      {
-        name: 'Pie',
-      },
-      {
-        name: 'Bar',
-      }
-    ]
-
-    this.get('asw11b')
   }
 
-
-  async get(g: string): Promise<any> {
-    this.indicators = await this.assessmentservice.getAllIndicators$(g).toPromise()
-    this.selectGroup(g)
+  get(g: string) {
+    this.assessmentservice.getAllIndicators(g).subscribe(
+      res => {
+        this.strategicIndicators = res
+        this.getCategory()
+        this.showGraphics(g)
+      }
+    )
   }
 
-  async getbyDates(g: string, from: string, to: string): Promise<any> {
-    this.indicators = await this.assessmentservice.getIndicatorsDate$(g, from, to).toPromise()
-    this.selectGroup(g)
+  getCategory() {
+    this.categories = this.strategicIndicators[0].probabilities
   }
 
-  deleteDate(): void {
-    this.get(this.actualGroup)
-    this.existsDate = false
-  }
-
-  sendDate(): void {
-    let doc = document.getElementsByTagName("input"); 
-    if(doc[0].value != '' && doc[1].value != null) {
-      let x = doc[0].value.split('/')
-      let year = x[2]
-      let day = x[1]
-      if(day.length == 1) {
-        day = '0'+day
-      }
-      let month = x[0]
-      if(month.length == 1) {
-        month = '0'+month
-      }
-      let from = year+'-'+month+'-'+day
- 
-      x = doc[1].value.split('/')
-      year = x[2]
-      day = x[1]
-      if(day.length == 1) {
-        day = '0'+day
-      }
-      month = x[0]
-      if(month.length == 1) {
-        month = '0'+month
-      }
-      let to = year+'-'+month+'-'+day
-
-      let fromsp = from.split('-')
-      let tosp = to.split('-')
-      console.log(parseInt(fromsp[0]))
-      console.log(parseInt(tosp[0]))
-      if(parseInt(fromsp[0]) > parseInt(tosp[0])) {
-        
-        this.get(this.actualGroup)
-      }
-      else if(parseInt(fromsp[0]) == parseInt(tosp[0]) && parseInt(fromsp[1]) > parseInt(tosp[1])) {
-  
-        this.get(this.actualGroup)
-      }
-      else if(parseInt(fromsp[0]) == parseInt(tosp[0]) && parseInt(fromsp[1]) == parseInt(tosp[1]) && parseInt(fromsp[2]) > parseInt(tosp[2])) {
-
-        this.get(this.actualGroup)
-      }
-      else {
-        this.getbyDates(this.actualGroup, from, to)
-        this.existsDate = true
-      }
-    }
-    else {
-
-      this.get(this.actualGroup)
+  showGraphics(g: string) {
+    for(let i = 0; i < this.showedOpt.length; i++) {
+      this.takeData(i)
+      this.generateGraphics(i, g)
     }
   }
 
-  selectGroup(g: string): void {
-    this.actualGroup = g;
-    this.options = []
-
-    this.description()
-
-    for(let j=0; j < this.title.length; j++){
-      this.takeData(j)
-      this.takeDetails(j)
-      this.generateGraphics(j)
+  selectGroupsAdmin(g: Array<any>): void {
+    this.groups = []
+    this.graphics = []
+    this.rationale = []
+    for(let i = 0; i < g.length; i++) {
+      this.groups.push(g[i].name);
+      this.get(g[i].name)
     }
   }
 
-  description(): void {
-    this.title = []
-    for(let i=0; i < this.indicators.length; i++){
-      this.present = false
-      for(let j=0; j < this.title.length; j++){
-        if (this.indicators[i].name == this.title[j]) {
-          this.present = true
-        }
-      }
-      if(!this.present) {
-        this.title.push(this.indicators[i].name)
-      }
+  selectShowedGraphs(selected: any) {
+    this.graphics = []
+    this.rationale = []
+    this.showedOpt = selected.value
+    for(let i = 0; i < this.groups.length; i++) {
+      this.get(this.groups[i])
     }
   }
 
-  takeDetails(j: number): void {
-    let text = this.indicators[j].rationale
-    const a = text.indexOf("{");
-    const b = text.indexOf("}");
-    const chars = text.substring(a + 2, b);
-    const names = chars.split(";");
-    this.d = {
-      desc: this.indicators[j].value_description,
-      fecha: this.indicators[j].date,
-      prop: names
+  showMultiselect(): boolean {
+    let retorno = false
+    if (this.groups.length == 0) {
+      retorno = true
+    }
+    return retorno
+  }
+
+  getRat(ration: any) {
+    let aux = ration.split('{')
+    aux = aux[1].split(';')
+    for(let i = 0; i < aux.length; i++) {
+      if(aux[i].includes('}')) {
+        aux = aux.slice(0 ,i)
+      }
+    }
+    for(let i = 0; i < aux.length; i++) {
+      let n = aux[i].slice(aux[i].indexOf(' ') + 1, aux[i].indexOf('(') - 1)
+      let val = aux[i].slice(aux[i].indexOf(':') + 2, aux[i].indexOf(','))
+      this.rationale.push({ name: n, value: parseFloat(val)});
     }
   }
 
   takeData(j: number): void {
     this.datos = []
+    this.rationale = []
     this.dataNames = []
-    this.individuals = []
-    this.dataValues = []
-    this.dataDate = []
-    for(let i=0; i < this.indicators.length; i++){
-      if (this.indicators[i].name == this.title[j]) {
-        this.datos.push({ value: this.indicators[i].value.first, name: this.indicators[i].name })
-        this.dataNames.push(this.indicators[i].name)
-        this.dataValues.push(this.indicators[i].value.first)
-        this.total = this.total - this.indicators[i].value.first
-      }
-      if(this.indicators[i].name == this.title[0]){
-        this.dataDate.push(this.indicators[i].date)
-      }
-    }
-    this.total = 1
-  }
-
-
-  generateGraphics(j: number) {
-    if(this.type == 'Pie') {
-      this.option0 = {
-        title: {
-          text: this.title[j],
-          left: 'center',
-        },
-        tooltip: {
-          trigger: 'item',
-        },
-        legend: {
-          orient: 'horizontal',
-          bottom: 'bottom',
-          itemGap: 20,
-          top: 'auto',
-        },
-        toolbox: {
-          show: true,
-          orient: 'vertical',
-          left: 'right',
-          top: 'center',
-          feature: {
-            mark: { show: true },
-            restore: { show: true },
-            saveAsImage: { show: true }
-          }
-        },
-        series: [
-          {
-            type: 'pie',
-            radius: '60%',
-            label: {
-              formatter: '{b|{b}：}{c}  {per|{d}%}  ',
-              backgroundColor: '#F6F8FC',
-              borderColor: '#8C8D8E',
-              borderWidth: 1,
-              borderRadius: 4,
-              rich: {
-                b: {
-                  color: '#4C5058',
-                  fontSize: 14,
-                  fontWeight: 'bold',
-                  lineHeight: 33
-                },
-                per: {
-                  color: '#fff',
-                  backgroundColor: '#4C5058',
-                  padding: [3, 4],
-                  borderRadius: 4
-                }
-              }
-            },
-            data: this.datos,
-            top: 40,
-            emphasis: {
-              itemStyle: {
-                shadowBlur: 10,
-                shadowOffsetX: 0,
-                shadowColor: 'rgba(0, 0, 0, 0.5)'
-              }
-            }
-          }
-        ]
-      }
-
-      for(let i=0; i < this.dataValues.length; i++){
-        this.createIndividual(i, j)
-        this.individuals.push(this.option)
-      }
-      
-      this.opt = {
-        graph: this.option0,
-        det: this.individuals
-      }
-      this.options.push(this.opt)
-    }
-    else if(this.type == 'Bar') {
-      this.createBarSeries()
-      this.option0 = {
-        title: {
-          text: this.title[j],
-          left: 'center',
-        },
-        legend: {
-          data: this.names,
-          orient: 'horizontal',
-          bottom: 'bottom',
-          itemGap: 20,
-          top: 'auto',
-        },
-        toolbox: {
-          show: true,
-          orient: 'vertical',
-          left: 'right',
-          top: 'center',
-          feature: {
-            mark: { show: true },
-            magicType: { show: true, type: ['line', 'bar'] },
-            restore: { show: true },
-            saveAsImage: { show: true }
-          }
-        },
-        xAxis: {
-          type: 'category',
-          axisTick: { show: false },
-          data: this.dataDate
-        },
-        yAxis: {
-          type: 'value'
-        },
-        series: this.barSeries
-      }
-
-      for(let i=0; i < this.dataValues.length; i++){
-        this.createIndividual(i, j)
-        this.individuals.push(this.option)
-      }
-      
-      this.opt = {
-        graph: this.option0,
-        det: this.individuals
-      }
-      this.options.push(this.opt)
-    }
-  }
-
-  createBarSeries(): void {
-    this.names = []
-    let nameExists = false
-    for(let i=0; i < this.dataNames.length; i++){
-      for(let j=0; j < this.names.length; j++){
-        if(this.names[j] == this.dataNames[i]) {
-          nameExists = true
-        }
-      }
-      if(!nameExists) {
-        this.names.push(this.dataNames[i])
-      }
-      nameExists = false
-    }
-
-    this.barSeries = []
-    for(let j=0; j < this.names.length; j++){
-      let barData = []
-      for(let i=0; i < this.dataNames.length; i++){
-        if(this.names[j] == this.dataNames[i]) {
-          barData.push(this.dataValues[i].toPrecision(2))
-        }
-      }
-      if(this.existsDate) {
-        this.barSeries.push(
-          {
-            name: this.names[j],
-            type: 'bar',
-            top: 40,
-            barGap: 0,
-            emphasis: {
-              focus: 'series'
-            },
-            data: barData
-          }
-        )
-      }
-      else {
-        this.barSeries.push(
-          {
-            name: this.names[j],
-            type: 'bar',
-            top: 40,
-            label: {
-              show: true,
-              position: 'inside',
-              distance: 10,
-              align: 'left',
-              rotate: 90,
-              formatter: '{c}',
-              fontSize: 16,
-              rich: {
-                name: {}
-              }
-            },
-            barGap: 0,
-            emphasis: {
-              focus: 'series'
-            },
-            data: barData
-          }
-        )
+    for(let i=0; i < this.strategicIndicators.length; i++){
+      if ((this.strategicIndicators[i].description == this.showedOpt[j].description) 
+      && ((this.strategicIndicators[i].description == '' && this.strategicIndicators[i].name == this.showedOpt[j].name) || this.strategicIndicators[i].description != '')) {
+        this.datos.push({ value: this.strategicIndicators[i].value.first, name: this.strategicIndicators[i].value.second })
+        this.dataNames.push(this.strategicIndicators[i].name)
+        this.getRat(this.strategicIndicators[i].rationale)
       }
     }
   }
 
-  createIndividual(i: number, j: number): void {
-    this.option = {
-      legend: {
-        show: true,
-        data: this.dataDate,
-        orient: 'horizontal',
-        bottom: 'bottom',
+  generateGraphics(j: number, g: string) {
+    this.createStackedSeries(j)
+    this.stacked = {
+      title: {
+        text: this.showedOpt[j].name,
+        subtext: this.showedOpt[j].description,
+        left: 'center',
       },
-      series: [
-        {
-          type: 'gauge',
-          name: this.dataDate[i],
-          startAngle: 180,
-          endAngle: 0,
-          center: ['50%', '75%'],
-          radius: '90%',
-          min: 0,
-          max: 1,
-          splitNumber: 8,
-          axisLine: {
-            lineStyle: {
-              width: 6,
-              color: [
-                [0.33, '#FF6E76'],
-                [0.66, '#FDDD60'],
-                [1, '#7CFFB2']
-              ]
-            }
-          },
-          pointer: {
-            icon: 'path://M12.8,0.7l12,40.1H0.7L12.8,0.7z',
-            length: '12%',
-            width: 20,
-            offsetCenter: [0, '-60%'],
-            itemStyle: {
-              color: 'inherit'
-            }
-          },
-          axisTick: {
-            length: 12,
-            lineStyle: {
-              color: 'inherit',
-              width: 2
-            }
-          },
-          splitLine: {
-            length: 20,
-            lineStyle: {
-              color: 'inherit',
-              width: 5
-            }
-          },
-          axisLabel: {
-            color: '#464646',
-            fontSize: 20,
-            distance: -60,
-            rotate: 'tangential',
-          },
-          title: {
-            offsetCenter: [0, '20%'],
-            fontSize: 20
-          },
-          detail: {
-            fontSize: 30,
-            offsetCenter: [0, '-35%'],
-            valueAnimation: true,
-            formatter: function (value: number) {
-              return Math.round(value * 100) + '';
-            },
-            color: 'inherit'
-          },
-          data: [
-            {
-              value: this.dataValues[i],
-              name: this.dataNames[i]
-            }
-          ]
+      /*tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'shadow'
         }
-      ]
-    };
-  }
-
-  selectGraph(g: string): void {
-    this.type = g
-    this.chooseGraph()
-    this.selectGroup(this.actualGroup)
-  }
-
-  chooseGraph():void {
-    if(this.type == 'Pie') {
-      this.pie = true;
-      this.bar = false;
+      },*/
+      legend: {
+        orient: 'horizontal',
+        bottom: 0,
+        itemGap: 20,
+        
+      },
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '10%',
+        containLabel: true
+      },
+      toolbox: {
+        show: true,
+        orient: 'vertical',
+        left: 'right',
+        top: 'bottom',
+        feature: {
+          mark: { show: true },
+          restore: { show: true },
+          saveAsImage: { show: true }
+        }
+      },
+      xAxis: {
+        type: 'category',
+        axisTick: { show: false },
+        data: this.dataNames
+      },
+      yAxis: {
+        type: 'value'
+      },
+      series: this.stackedSeries
     }
-    else if (this.type == 'Bar') {
-      this.bar = true;
-      this.pie = false;
+
+    let aux = {
+      group: g,
+      stacked: this.stacked,
     }
+    this.graphics.push(aux)
   }
 
-  show(): void {
-    this.showDetails = !this.showDetails
+  createStackedSeries(i: number) {
+    let linesData = []
+    let avgCol = this.categories[0].color
+    let aux = Math.abs(this.categories[0].upperThreshold - this.datos[0].value) 
+
+    console.log(this.categories)
+
+    for(let i = 0; i < this.categories.length; i++) {
+      linesData.push(
+        {
+          name: this.categories[i].label,
+          yAxis: this.categories[i].upperThreshold,
+          lineStyle: {
+            color: this.categories[i].color,
+            type: [5, 10],
+            dashOffset: 10,
+            opacity: 0.2
+          },
+        }
+      )
+
+      if(Math.abs(this.categories[i].upperThreshold - this.datos[0].value) < aux) {
+        avgCol = this.categories[i].color
+        aux = Math.abs(this.categories[i].upperThreshold - this.datos[0].value)
+      }
+    }
+
+    linesData.push(
+      {
+        name: this.datos[0].name,
+        label: {
+          show: true,
+          position: 'end',
+          distance: 10,
+          align: 'left',
+          formatter: '{b}\n{c}',
+          fontSize: 10
+        },
+        yAxis: this.datos[0].value,
+        lineStyle: {
+          color: avgCol,
+          type: 'solid'
+        },
+      }
+    )
+
+    console.log(linesData)
+    
+    this.stackedSeries = []
+    for(let j=0; j < this.rationale.length; j++){
+      this.stackedSeries.push(
+        {
+          name: this.rationale[j].name,
+          type: 'bar',
+          top: 40,
+          label: {
+            show: true,
+            position: 'inside',
+            distance: 10,
+            align: 'left',
+            rotate: 90,
+            formatter: '{c}',
+            fontSize: 16,
+            rich: {
+              name: {}
+            }
+          },
+          markLine: {
+            show: true,
+            data: linesData
+          },
+          emphasis: {
+            focus: 'series'
+          },
+          data: [this.rationale[j].value]
+        }
+      )
+    }
   }
 }

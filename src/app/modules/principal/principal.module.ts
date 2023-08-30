@@ -5,6 +5,7 @@ import { PrincipalRoutingModule } from './principal-routing.module';
 import { PrincipalPageComponent } from './pages/principal-page/principal-page.component';
 import { SharedModule } from '@shared/shared.module';
 import { DialogModule } from 'primeng/dialog';
+import { ButtonModule } from 'primeng/button';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { DialogModule } from 'primeng/dialog';
     PrincipalRoutingModule,
     SharedModule,
     NgxEchartsModule,
-    DialogModule
+    DialogModule,
+    ButtonModule
   ]
 })
 export class PrincipalModule { }

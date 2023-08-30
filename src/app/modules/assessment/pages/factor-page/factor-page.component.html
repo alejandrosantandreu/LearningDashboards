@@ -1,56 +1,38 @@
 <div class="default-page">
-  <h1>Assessment: Factors</h1>
-  <!--<app-group-selector (newItemEvent)= "selectGroup($event)"></app-group-selector>-->
+  <h1 class="subtitles">Current Assessment: Factors</h1>
+  <app-group-selector (newItemEvent)= "selectGroupsAdmin($event)"></app-group-selector>
 
-  <div class="dates">
-
+  <div *ngIf="!showOptions()" class="multisep">
+    <p-multiSelect
+      [options]="nameDesc"
+      [disabled]="showMultiselect()"
+      (onChange)="selectShowedGraphs($event)"
+      defaultLabel="Select Factor" 
+      optionLabel="name" 
+      display="chip">
+    </p-multiSelect>
   </div>
 
-  <ul class="graphic-type ">
-    <li *ngFor="let item of menuOptions">
-      <app-graphic-type [name]="item.name" (newItemEvent)= "selectGraph($event)"></app-graphic-type>
-    </li>
-  </ul>
+  <div *ngIf="showOptions()" class="multisep">
+    <p-multiSelect
+      [options]="nameDescCopy"
+      [disabled]="showMultiselect()"
+      (onChange)="selectShowedGraphs($event)"
+      defaultLabel="Select Factor" 
+      optionLabel="name" 
+      display="chip">
+    </p-multiSelect>
+  </div>
+
   <div class="separator"></div>
 
-
-  <div *ngIf="pie">
-    <ul class="graphics">
-      <li *ngFor="let item of options">
-        <div echarts [options]="item.graph" class="demo-chart"></div>
-        <button *ngIf="!existsDate" (click)="show()" class="default-button">
-          <span class="default-text">More details</span>
-        </button>
-        <div *ngIf="showDetails">
-          <ul class="list">
-            <li *ngFor="let item of item.det">
-              <div echarts [options]="item" class="demo-chart"></div>
-            </li>
-          </ul>
-        </div>
-        <div class="separator-graph"></div>
-      </li>
-    </ul>
+  <div *ngIf="graphics.length > 0">
+    <p-accordion [multiple]="true">
+      <p-accordionTab *ngFor="let item of graphics; let i = index" [header]="item.stacked.title.text + ' ' + item.group" [selected]="true">
+        <div echarts [options]="item.stacked" class="demo-chart"></div>
+      </p-accordionTab>
+      <div class="separator-graph"></div>
+    </p-accordion>
   </div>
-
-  <div *ngIf="bar">
-    <ul class="graphics">
-      <li *ngFor="let item of options">
-        <div echarts [options]="item.graph" class="demo-chart"></div>
-        <button *ngIf="!existsDate" (click)="show()" class="default-button">
-          <span class="default-text">More details</span>
-        </button>
-        <div *ngIf="showDetails">
-          <ul class="list">
-            <li *ngFor="let item of item.det">
-              <div echarts [options]="item" class="demo-chart"></div>
-            </li>
-          </ul>
-        </div>
-        <div class="separator-graph"></div>
-      </li>
-    </ul>
-  </div> 
-
-  <app-back-menu [routerLink]="'/assessment'"></app-back-menu>
+  <div *ngIf="graphics.length == 0" class="ini"></div>
 </div>
