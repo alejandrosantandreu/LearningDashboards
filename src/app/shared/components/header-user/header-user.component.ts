@@ -52,7 +52,7 @@ export class HeaderUserComponent implements OnInit {
         label: "Strategic Indicator",
         items: [
           { 
-            label: 'Strategic Indicators',
+            label: 'Current Assessment Strategic Indicators',
             routerLink: ['/assessment/indicator'],
             routerLinkActiveOptions: {
               exact: true
@@ -60,7 +60,7 @@ export class HeaderUserComponent implements OnInit {
           },
           { 
             label: 'Strategic Indicators by Dates',
-            routerLink: ['/assessment/indicator/date'],
+            routerLink: ['/assessment/indicator/dates'],
             routerLinkActiveOptions: {
               exact: true
             },
@@ -74,7 +74,7 @@ export class HeaderUserComponent implements OnInit {
         label: "Factors",
         items: [
           { 
-            label: 'Factors',
+            label: 'Current Assessment Factors',
             routerLink: ['/assessment/factor'],
             routerLinkActiveOptions: {
               exact: true
@@ -82,7 +82,7 @@ export class HeaderUserComponent implements OnInit {
           },
           { 
             label: 'Factors by Dates',
-            routerLink: ['/assessment/factor/date'],
+            routerLink: ['/assessment/factor/dates'],
             routerLinkActiveOptions: {
               exact: true
             },
@@ -96,7 +96,7 @@ export class HeaderUserComponent implements OnInit {
         label: "Metrics",
         items: [
           { 
-            label: 'Metrics',
+            label: 'Current Assessment Metrics',
             routerLink: ['/assessment/metric'],
             routerLinkActiveOptions: {
               exact: true
@@ -104,7 +104,7 @@ export class HeaderUserComponent implements OnInit {
           },
           { 
             label: 'Metrics by Dates',
-            routerLink: ['/assessment/metric/date'],
+            routerLink: ['/assessment/metric/dates'],
             routerLinkActiveOptions: {
               exact: true
             },

@@ -6,7 +6,6 @@ import { IndicatorPageComponent } from './pages/indicator-page/indicator-page.co
 import { FactorPageComponent } from './pages/factor-page/factor-page.component';
 import { MetricPageComponent } from './pages/metric-page/metric-page.component';
 import { SharedModule } from '@shared/shared.module';
-import { AssessmentPageComponent } from './pages/assessment-page/assessment-page.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AssessmentService } from '@modules/assessment/services/assessment.service';
 import { HttpClientModule } from '@angular/common/http';
@@ -17,6 +16,10 @@ import { AccordionModule } from 'primeng/accordion';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { ToastModule } from 'primeng/toast';
+import { MetricDatesPageComponent } from './pages/metric-dates-page/metric-dates-page.component';
+import { FactorDatesPageComponent } from './pages/factor-dates-page/factor-dates-page.component';
+import { IndicatorDatesPageComponent } from './pages/indicator-dates-page/indicator-dates-page.component';
+import { DropdownModule } from 'primeng/dropdown';
 
 
 @NgModule({
@@ -24,7 +27,9 @@ import { ToastModule } from 'primeng/toast';
     IndicatorPageComponent,
     FactorPageComponent,
     MetricPageComponent,
-    AssessmentPageComponent,
+    MetricDatesPageComponent,
+    FactorDatesPageComponent,
+    IndicatorDatesPageComponent,
   ],
   imports: [
     CommonModule,
@@ -40,7 +45,8 @@ import { ToastModule } from 'primeng/toast';
     AccordionModule,
     RadioButtonModule,
     ProgressBarModule,
-    ToastModule
+    ToastModule,
+    DropdownModule
   ],
   providers: [AssessmentService],
   bootstrap: [MetricPageComponent]

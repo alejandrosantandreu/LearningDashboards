@@ -57,8 +57,8 @@ export class AssessmentService {
     })
   }
 
-  getMetricsDate(project: string, from: string, to: string): Observable<any> {
-    return this.http.get<MetricModel[]>(`api/metrics/${project}/${from}/${to}`,
+  getMetricsDate(project: string, date: string): Observable<any> {
+    return this.http.get<MetricModel[]>(`api/metrics/${project}/${date}`,
     {
       headers: this.headers,
     })
@@ -73,8 +73,8 @@ export class AssessmentService {
     
   }
 
-  getIndicatorsDate(project: string, from: string, to: string): Observable<any> {
-    return this.http.get<IndicatorModel[]>(`api/strategic-indicators/${project}/${from}/${to}`,
+  getIndicatorsDate(project: string, date: string): Observable<any> {
+    return this.http.get<IndicatorModel[]>(`api/strategic-indicators/${project}/${date}`,
     {
       headers: this.headers,
     })
@@ -89,8 +89,8 @@ export class AssessmentService {
     
   }
 
-  getFactorsDate(project: string, from: string, to: string): Observable<any> {
-    return this.http.get<QFModel[]>(`api/quality-factors/${project}/${from}/${to}`,
+  getFactorsDate(project: string, date: string): Observable<any> {
+    return this.http.get<QFModel[]>(`api/quality-factors/${project}/${date}`,
     {
       headers: this.headers,
     })

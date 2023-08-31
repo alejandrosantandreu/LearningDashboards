@@ -1,6 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import { AssessmentService } from '@modules/assessment/services/assessment.service';
-
 import { HttpClient } from '@angular/common/http';
 import { MetricModel } from '@core/metrics.model';
 
@@ -9,13 +8,17 @@ interface opt {
   description: string
 }
 
+interface datepicker {
+  name: string,
+  date: Date[]
+}
+
 @Component({
-  selector: 'app-metric-page',
-  templateUrl: './metric-page.component.html',
-  providers: [AssessmentService],
-  styleUrls: ['./metric-page.component.css']
+  selector: 'app-metric-dates-page',
+  templateUrl: './metric-dates-page.component.html',
+  styleUrls: ['./metric-dates-page.component.css']
 })
-export class MetricPageComponent implements OnInit {
+export class MetricDatesPageComponent {
 
   nameDesc: opt[] = [
     {
@@ -88,15 +91,50 @@ export class MetricPageComponent implements OnInit {
 
   representationType: Array<any> = [
     {
-      name: 'Pie Chart'
-    },
-    {
       name: 'Bar Chart'
     },
     {
       name: 'Stacked Chart'
     }
   ]
+
+  dateOptions: datepicker[] = [
+    {
+      name: 'Custom Dates',
+      date: []
+    },
+    {
+      name: 'Last week',
+      date: []
+    },
+    {
+      name: 'Last two weeks',
+      date: []
+    },
+    {
+      name: 'Last month',
+      date: []
+    },
+    {
+      name: 'Last three months',
+      date: []
+    },
+    {
+      name: 'Last six months',
+      date: []
+    }
+  ]
+
+  dateOptionsCopy: any[] = []
+
+  selectedDefault!: datepicker;
+  rangeDates: Date[] = [];
+  minDate: Date = new Date();
+  lastWeek: Date = new Date();
+  last2Weeks: Date = new Date();
+  lastmonth: Date = new Date();
+  last3months: Date = new Date();
+  maxDate: Date = new Date();
 
   selectedRep: any = null
 
@@ -109,16 +147,13 @@ export class MetricPageComponent implements OnInit {
   nMembers: number = 0
 
   graphics: Array<any> = []
-  pBar: Array<any> = []
-  pie: any
   bar: any
   stacked: any
 
-  datos: any
   dataNames: Array<any> = []
   dataValues: Array<any> = []
+  dataDates: Array<any> = []
   rationale: Array<any> = []
-  date: any
   names: Array<any> = []
   barSeries: Array<any> = []
   stackedSeries: Array<any> = []
@@ -130,6 +165,8 @@ export class MetricPageComponent implements OnInit {
 
     this.nameDescCopy = this.nameDesc.slice(0, -3)
 
+    this.dateOptionsCopy = this.dateOptions.slice(1)
+
     this.assessmentservice.getCategories().subscribe(
       res => {
         this.categories = res
@@ -140,15 +177,102 @@ export class MetricPageComponent implements OnInit {
         }
       }
     )
+
+    this.iniDates() 
+  }
+
+  iniDates() {
+    let month = this.maxDate.getMonth();
+    let year = this.maxDate.getFullYear();
+
+    this.lastWeek.setDate(this.maxDate.getDate() - 7)
+    this.dateOptions[1].date = [this.lastWeek, this.maxDate]
+
+    this.last2Weeks.setDate(this.maxDate.getDate() - 14)
+    this.dateOptions[2].date = [this.last2Weeks, this.maxDate]
+
+    let prevMonth = (month === 0) ? 11 : month -1;
+    let prevYear = (prevMonth === 11) ? year - 1 : year;
+    this.lastmonth.setMonth(prevMonth);
+    this.lastmonth.setFullYear(prevYear);
+    this.dateOptions[3].date = [this.lastmonth, this.maxDate]
+
+    let threeMonth = (month === 0) ? 9 : month -3;
+    threeMonth = (month === 1) ? 10 : month -3;
+    threeMonth = (month === 2) ? 11 : month -3;
+    prevYear = (threeMonth === 11 || threeMonth === 10 || threeMonth === 9) ? year - 1 : year;
+    this.last3months.setMonth(threeMonth);
+    this.last3months.setFullYear(prevYear);
+    this.dateOptions[4].date = [this.last3months, this.maxDate]
+    
+    let sixMonth = (month === 0) ? 6 : month -6;
+    sixMonth = (month === 1) ? 7 : month -6;
+    sixMonth = (month === 2) ? 8 : month -6;
+    sixMonth = (month === 3) ? 9 : month -6;
+    sixMonth = (month === 4) ? 10 : month -6;
+    sixMonth = (month === 5) ? 11 : month -6;
+    prevYear = (sixMonth === 11 || sixMonth === 10 || sixMonth === 9 || 
+      sixMonth === 8 || sixMonth === 7 || sixMonth === 6) ? year - 1 : year;
+    this.minDate.setMonth(sixMonth);
+    this.minDate.setFullYear(prevYear);
+    this.dateOptions[5].date = [this.minDate, this.maxDate]
+  }
+
+  takeDefault() {
+    if(this.selectedDefault !== undefined && this.rangeDates != this.selectedDefault.date && this.selectedDefault.date[0] != this.maxDate) {
+      this.rangeDates = this.selectedDefault.date
+      if(this.selectedDefault != this.dateOptions[0]) {
+        this.dateOptions[0].date = []
+      }
+      this.getData()
+    }
+  }
+
+  customRange() {
+    if(this.rangeDates !== undefined) {
+      this.dateOptions[0].date = [this.rangeDates[0], this.rangeDates[1]]
+      this.selectedDefault = this.dateOptions[0]
+      this.getData()
+    }
+  }
+
+  getData() {
+    this.graphics = []
+    this.rationale = []
+    for(let i = 0; i < this.groups.length; i++) {
+      this.get(this.groups[i])
+    }
+  }
+
+  formatDates(): string {
+    let retorno = ''
+    for(let i = 0; i < this.rangeDates.length; i++) {
+      retorno += this.rangeDates[i].getFullYear().toString() + '-';
+      if(this.rangeDates[i].getMonth() < 9) {
+        retorno += '0' + (this.rangeDates[i].getMonth() + 1).toString() + '-'
+      }
+      else {
+        retorno += (this.rangeDates[i].getMonth() + 1).toString() + '-'
+      }
+      if(this.rangeDates[i].getDate() < 10) {
+        retorno += '0' + this.rangeDates[i].getDate().toString() + '/'
+      }
+      else {
+        retorno += this.rangeDates[i].getDate().toString() + '/'
+      }
+    }
+    return retorno
   }
 
   get(g: string) {
-    this.assessmentservice.getAllMetrics(g).subscribe(
+    let dates = this.formatDates()
+    this.assessmentservice.getMetricsDate(g, dates).subscribe(
       res => {
         this.metrics = res
+        let d = this.metrics[0].date
         this.nMembers = 0
         for(let i = 0; i < this.metrics.length; i++) {
-          if(this.metrics[i].description == this.nameDesc[2].description) {
+          if(this.metrics[i].description == this.nameDesc[2].description && this.metrics[i].date == d) {
             this.nMembers++
           }
         }
@@ -169,35 +293,33 @@ export class MetricPageComponent implements OnInit {
 
   showGraphics(g: string) {
     for(let i = 0; i < this.showedOpt.length; i++) {
-      if(this.showedOpt[i].name == 'Assigned Tasks' || this.showedOpt[i].name == 'Closed Tasks' || 
-      this.showedOpt[i].name == 'Commits' || this.showedOpt[i].name == 'Modified lines' 
-      || this.showedOpt[i].name == 'Unassigned tasks' || this.showedOpt[i].name == 'Total hours') {
-        this.takeDataTipo2(i)
-        this.generateGraphics(i, g)
-      }
-      else {
-        this.takeDataTipo1(i, g)
-      }
+      this.takeData(i)
+      this.generateGraphics(i, g)
     }
   }
 
   selectGroupsAdmin(g: Array<any>): void {
     this.groups = []
     this.graphics = []
-    this.pBar = []
     this.rationale = []
     for(let i = 0; i < g.length; i++) {
       this.groups.push(g[i].name);
-      this.get(g[i].name)
+      if(this.rangeDates.length > 0) {
+        this.get(g[i].name)
+      }
     }
   }
 
   selectShowedGraphs(selected: any) {
     this.graphics = []
-    this.pBar = []
     this.rationale = []
     this.showedOpt = selected.value
     for(let i = 0; i < this.groups.length; i++) {
+      if(this.rangeDates.length == 0) {
+        this.rangeDates = [this.maxDate, this.maxDate]
+        this.dateOptions[0].date = [this.rangeDates[0], this.rangeDates[1]]
+        this.selectedDefault = this.dateOptions[0]
+      }
       this.get(this.groups[i])
     }
   }
@@ -226,7 +348,7 @@ export class MetricPageComponent implements OnInit {
     let val2 = name2.slice(name2.indexOf('=') + 1, name2.indexOf('}'))
     name2 = name2.slice(0, name2.indexOf('='))
     
-    this.rationale.push({ n1: name1, v1: parseFloat(val1).toPrecision(2), n2: name2, v2: parseFloat(val2).toPrecision(2)});
+    this.rationale.push({ n1: name1, v1: parseInt(val1), n2: name2, v2: parseInt(val2)});
     /*if (parseInt(val1) > parseInt(val2)) {
       this.rationale.push({ n1: name1, v1: parseInt(val1) - parseInt(val2), n2: name2, v2: parseInt(val2)});
     }
@@ -235,48 +357,26 @@ export class MetricPageComponent implements OnInit {
     }*/
   }
 
-  takeDataTipo1(j: number, g: string): void {
-    for(let i=0; i < this.metrics.length; i++){
-      if ((this.metrics[i].description == this.showedOpt[j].description) 
-      && ((this.metrics[i].description == '' && this.metrics[i].name == this.showedOpt[j].name) || this.metrics[i].description != '')) {
-        this.pBar.push({ value: this.metrics[i].value_description*100, name: this.metrics[i].name, group: g})
-        this.getRat(this.metrics[i].rationale)
-      }
-    }
-  }
 
 
-
-  takeDataTipo2(j: number): void {
-    this.datos = []
+  takeData(j: number): void {
     this.rationale = []
     this.dataNames = []
     this.dataValues = []
-    this.date = this.metrics[0].date
-    let total = 1
+    this.dataDates = []
+    let aux = this.metrics[0].name
     for(let i=0; i < this.metrics.length; i++){
       if ((this.metrics[i].description == this.showedOpt[j].description) 
       && ((this.metrics[i].description == '' && this.metrics[i].name == this.showedOpt[j].name) || this.metrics[i].description != '')) {
-        this.datos.push({ value: this.metrics[i].value_description, name: this.metrics[i].name })
         this.dataNames.push(this.metrics[i].name)
         this.dataValues.push(this.metrics[i].value_description)
         this.getRat(this.metrics[i].rationale)
-        total = total - this.metrics[i].value_description
+      }
+
+      if(aux == this.metrics[i].name) {
+        this.dataDates.push(this.metrics[i].date)
       }
     }
-    if(total != 1 && total > 0) {
-      if(this.showedOpt[j].name == 'Assigned Tasks') {
-        this.datos.push({ value: total.toPrecision(2), name: 'Unassigned Tasks'})
-        this.dataNames.push('Unassigned Tasks')
-        this.dataValues.push(total.toPrecision(2))
-      }
-      else if (this.showedOpt[j].name == 'Unassigned Tasks'){
-        this.datos.push({ value: total.toPrecision(2), name: 'Assigned tasks'})
-        this.dataNames.push('Assigned tasks')
-        this.dataValues.push(total.toPrecision(2))
-      }
-    }
-    total = 1
   }
 
   changeSelected(i: number, change: any) {
@@ -284,70 +384,6 @@ export class MetricPageComponent implements OnInit {
   }
 
   generateGraphics(j: number, g: string) {
-    this.pie = {
-      title: {
-        text: this.showedOpt[j].name,
-        subtext: this.showedOpt[j].description,
-        left: 'center',
-      },
-      tooltip: {
-        trigger: 'item',
-      },
-      legend: {
-        orient: 'horizontal',
-        bottom: 'bottom',
-        itemGap: 20,
-        top: 'auto',
-      },
-      toolbox: {
-        show: true,
-        orient: 'vertical',
-        left: 'right',
-        top: 'bottom',
-        feature: {
-          mark: { show: true },
-          restore: { show: true },
-          saveAsImage: { show: true }
-        }
-      },
-      series: [
-        {
-          type: 'pie',
-          radius: '50%',
-          label: {
-            formatter: '{b|{b}：}{c}  {per|{d}%}  ',
-            backgroundColor: '#F6F8FC',
-            borderColor: '#8C8D8E',
-            borderWidth: 1,
-            borderRadius: 4,
-            rich: {
-              b: {
-                color: '#4C5058',
-                fontSize: 14,
-                fontWeight: 'bold',
-                lineHeight: 33
-              },
-              per: {
-                color: '#fff',
-                backgroundColor: '#4C5058',
-                padding: [3, 4],
-                borderRadius: 4
-              }
-            }
-          },
-          data: this.datos,
-          top: 20,
-          emphasis: {
-            itemStyle: {
-              shadowBlur: 10,
-              shadowOffsetX: 0,
-              shadowColor: 'rgba(0, 0, 0, 0.5)'
-            }
-          }
-        }
-      ]
-    }
-
     this.createBarSeries(j)
     this.bar = {
       title: {
@@ -376,7 +412,7 @@ export class MetricPageComponent implements OnInit {
       xAxis: {
         type: 'category',
         axisTick: { show: false },
-        data: [this.date]
+        data: this.dataDates
       },
       yAxis: {
         type: 'value'
@@ -433,7 +469,6 @@ export class MetricPageComponent implements OnInit {
 
     let aux = {
       group: g,
-      pie: this.pie,
       bar: this.bar,
       stacked: this.stacked,
       select: this.representationType[0]
@@ -472,7 +507,7 @@ export class MetricPageComponent implements OnInit {
               type: 'bar',
               top: 40,
               label: {
-                show: true,
+                show: false,
                 position: 'inside',
                 distance: 10,
                 align: 'left',
@@ -543,7 +578,7 @@ export class MetricPageComponent implements OnInit {
               type: 'bar',
               top: 40,
               label: {
-                show: true,
+                show: false,
                 position: 'inside',
                 distance: 10,
                 align: 'left',
@@ -598,7 +633,7 @@ export class MetricPageComponent implements OnInit {
               type: 'bar',
               top: 40,
               label: {
-                show: true,
+                show: false,
                 position: 'inside',
                 distance: 10,
                 align: 'left',
@@ -694,4 +729,3 @@ export class MetricPageComponent implements OnInit {
     }
   }
 }
-

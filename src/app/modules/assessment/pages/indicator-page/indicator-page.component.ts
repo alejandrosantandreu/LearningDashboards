@@ -41,8 +41,8 @@ export class IndicatorPageComponent implements OnInit {
   stacked: any
 
   datos: any
-  dataNames: Array<any> = []
   rationale: Array<any> = []
+  date: any
   stackedSeries: Array<any> = []
 
   constructor(private assessmentservice: AssessmentService, private http: HttpClient) { }
@@ -109,19 +109,18 @@ export class IndicatorPageComponent implements OnInit {
     for(let i = 0; i < aux.length; i++) {
       let n = aux[i].slice(aux[i].indexOf(' ') + 1, aux[i].indexOf('(') - 1)
       let val = aux[i].slice(aux[i].indexOf(':') + 2, aux[i].indexOf(','))
-      this.rationale.push({ name: n, value: parseFloat(val)});
+      this.rationale.push({ name: n, value: parseFloat(val).toPrecision(2)});
     }
   }
 
   takeData(j: number): void {
     this.datos = []
     this.rationale = []
-    this.dataNames = []
+    this.date = this.strategicIndicators[0].date
     for(let i=0; i < this.strategicIndicators.length; i++){
       if ((this.strategicIndicators[i].description == this.showedOpt[j].description) 
       && ((this.strategicIndicators[i].description == '' && this.strategicIndicators[i].name == this.showedOpt[j].name) || this.strategicIndicators[i].description != '')) {
         this.datos.push({ value: this.strategicIndicators[i].value.first, name: this.strategicIndicators[i].value.second })
-        this.dataNames.push(this.strategicIndicators[i].name)
         this.getRat(this.strategicIndicators[i].rationale)
       }
     }
@@ -167,7 +166,7 @@ export class IndicatorPageComponent implements OnInit {
       xAxis: {
         type: 'category',
         axisTick: { show: false },
-        data: this.dataNames
+        data: [this.date]
       },
       yAxis: {
         type: 'value'

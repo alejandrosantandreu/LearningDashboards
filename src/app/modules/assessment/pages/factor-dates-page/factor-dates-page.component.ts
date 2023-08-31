@@ -8,13 +8,18 @@ interface opt {
   description: string
 }
 
+interface datepicker {
+  name: string,
+  date: Date[]
+}
+
 @Component({
-  selector: 'app-factor-page',
-  templateUrl: './factor-page.component.html',
-  styleUrls: ['./factor-page.component.css']
+  selector: 'app-factor-dates-page',
+  templateUrl: './factor-dates-page.component.html',
+  styleUrls: ['./factor-dates-page.component.css']
 })
-export class FactorPageComponent implements OnInit {
-  
+export class FactorDatesPageComponent {
+
   nameDesc: opt[] = [
     {
       name: 'Commits Contribution',
@@ -68,6 +73,44 @@ export class FactorPageComponent implements OnInit {
 
   nameDescCopy: any[] = []
 
+  dateOptions: datepicker[] = [
+    {
+      name: 'Custom Dates',
+      date: []
+    },
+    {
+      name: 'Last week',
+      date: []
+    },
+    {
+      name: 'Last two weeks',
+      date: []
+    },
+    {
+      name: 'Last month',
+      date: []
+    },
+    {
+      name: 'Last three months',
+      date: []
+    },
+    {
+      name: 'Last six months',
+      date: []
+    }
+  ]
+
+  dateOptionsCopy: any[] = []
+
+  selectedDefault!: datepicker;
+  rangeDates: Date[] = [];
+  minDate: Date = new Date();
+  lastWeek: Date = new Date();
+  last2Weeks: Date = new Date();
+  lastmonth: Date = new Date();
+  last3months: Date = new Date();
+  maxDate: Date = new Date();
+
   qualityFactors!: QFModel[]
   categories!: any[]
   selectedCat: string = ''
@@ -79,6 +122,7 @@ export class FactorPageComponent implements OnInit {
   stacked: any
 
   datos: any
+  dataDates: Array<any> = []
   rationale: Array<any> = []
   date: any
   stackedSeries: Array<any> = []
@@ -86,17 +130,105 @@ export class FactorPageComponent implements OnInit {
   constructor(private assessmentservice: AssessmentService, private http: HttpClient) { }
 
   ngOnInit(): void {
-     this.nameDescCopy = this.nameDesc.slice(0, -2)
+    this.nameDescCopy = this.nameDesc.slice(0, -2)
 
-     this.assessmentservice.getCategories().subscribe(
+    this.dateOptionsCopy = this.dateOptions.slice(1)
+
+    this.iniDates() 
+
+    this.assessmentservice.getCategories().subscribe(
       res => {
         this.categories = res
       }
     )
   }
 
+  iniDates() {
+    let month = this.maxDate.getMonth();
+    let year = this.maxDate.getFullYear();
+
+    this.lastWeek.setDate(this.maxDate.getDate() - 7)
+    this.dateOptions[1].date = [this.lastWeek, this.maxDate]
+
+    this.last2Weeks.setDate(this.maxDate.getDate() - 14)
+    this.dateOptions[2].date = [this.last2Weeks, this.maxDate]
+
+    let prevMonth = (month === 0) ? 11 : month -1;
+    let prevYear = (prevMonth === 11) ? year - 1 : year;
+    this.lastmonth.setMonth(prevMonth);
+    this.lastmonth.setFullYear(prevYear);
+    this.dateOptions[3].date = [this.lastmonth, this.maxDate]
+
+    let threeMonth = (month === 0) ? 9 : month -3;
+    threeMonth = (month === 1) ? 10 : month -3;
+    threeMonth = (month === 2) ? 11 : month -3;
+    prevYear = (threeMonth === 11 || threeMonth === 10 || threeMonth === 9) ? year - 1 : year;
+    this.last3months.setMonth(threeMonth);
+    this.last3months.setFullYear(prevYear);
+    this.dateOptions[4].date = [this.last3months, this.maxDate]
+    
+    let sixMonth = (month === 0) ? 6 : month -6;
+    sixMonth = (month === 1) ? 7 : month -6;
+    sixMonth = (month === 2) ? 8 : month -6;
+    sixMonth = (month === 3) ? 9 : month -6;
+    sixMonth = (month === 4) ? 10 : month -6;
+    sixMonth = (month === 5) ? 11 : month -6;
+    prevYear = (sixMonth === 11 || sixMonth === 10 || sixMonth === 9 || 
+      sixMonth === 8 || sixMonth === 7 || sixMonth === 6) ? year - 1 : year;
+    this.minDate.setMonth(sixMonth);
+    this.minDate.setFullYear(prevYear);
+    this.dateOptions[5].date = [this.minDate, this.maxDate]
+  }
+
+  takeDefault() {
+    if(this.selectedDefault !== undefined && this.rangeDates != this.selectedDefault.date && this.selectedDefault.date[0] != this.maxDate) {
+      this.rangeDates = this.selectedDefault.date
+      if(this.selectedDefault != this.dateOptions[0]) {
+        this.dateOptions[0].date = []
+      }
+      this.getData()
+    }
+  }
+
+  customRange() {
+    if(this.rangeDates !== undefined) {
+      this.dateOptions[0].date = [this.rangeDates[0], this.rangeDates[1]]
+      this.selectedDefault = this.dateOptions[0]
+      this.getData()
+    }
+  }
+
+  getData() {
+    this.graphics = []
+    this.rationale = []
+    for(let i = 0; i < this.groups.length; i++) {
+      this.get(this.groups[i])
+    }
+  }
+
+  formatDates(): string {
+    let retorno = ''
+    for(let i = 0; i < this.rangeDates.length; i++) {
+      retorno += this.rangeDates[i].getFullYear().toString() + '-';
+      if(this.rangeDates[i].getMonth() < 9) {
+        retorno += '0' + (this.rangeDates[i].getMonth() + 1).toString() + '-'
+      }
+      else {
+        retorno += (this.rangeDates[i].getMonth() + 1).toString() + '-'
+      }
+      if(this.rangeDates[i].getDate() < 10) {
+        retorno += '0' + this.rangeDates[i].getDate().toString() + '/'
+      }
+      else {
+        retorno += this.rangeDates[i].getDate().toString() + '/'
+      }
+    }
+    return retorno
+  }
+
   get(g: string) {
-    this.assessmentservice.getAllFactors(g).subscribe(
+    let dates = this.formatDates()
+    this.assessmentservice.getFactorsDate(g, dates).subscribe(
       res => {
         this.qualityFactors = res
         this.getCategory()
@@ -130,7 +262,9 @@ export class FactorPageComponent implements OnInit {
     this.rationale = []
     for(let i = 0; i < g.length; i++) {
       this.groups.push(g[i].name);
-      this.get(g[i].name)
+      if(this.rangeDates.length > 0) {
+        this.get(g[i].name)
+      }
     }
   }
 
@@ -139,6 +273,11 @@ export class FactorPageComponent implements OnInit {
     this.rationale = []
     this.showedOpt = selected.value
     for(let i = 0; i < this.groups.length; i++) {
+      if(this.rangeDates.length == 0) {
+        this.rangeDates = [this.maxDate, this.maxDate]
+        this.dateOptions[0].date = [this.rangeDates[0], this.rangeDates[1]]
+        this.selectedDefault = this.dateOptions[0]
+      }
       this.get(this.groups[i])
     }
   }
@@ -181,12 +320,17 @@ export class FactorPageComponent implements OnInit {
   takeData(j: number): void {
     this.datos = []
     this.rationale = []
-    this.date = this.qualityFactors[0].date
+    this.dataDates = []
+    let aux = this.qualityFactors[0].name
     for(let i=0; i < this.qualityFactors.length; i++){
       if ((this.qualityFactors[i].description == this.showedOpt[j].description) 
       && ((this.qualityFactors[i].description == '' && this.qualityFactors[i].name == this.showedOpt[j].name) || this.qualityFactors[i].description != '')) {
         this.datos.push({ value: this.qualityFactors[i].value.first, name: this.qualityFactors[i].value.second })
         this.getRat(this.qualityFactors[i].rationale)
+      }
+
+      if(aux == this.qualityFactors[i].name) {
+        this.dataDates.push(this.qualityFactors[i].date)
       }
     }
   }
@@ -232,7 +376,7 @@ export class FactorPageComponent implements OnInit {
       xAxis: {
         type: 'category',
         axisTick: { show: false },
-        data: [this.date]
+        data: this.dataDates
       },
       yAxis: {
         type: 'value'
@@ -299,16 +443,34 @@ export class FactorPageComponent implements OnInit {
       }
     )
 
-    console.log(catData)
+    let names: any[] = []
+    let nameExists = false
+    for(let i=0; i < this.rationale.length; i++){
+      for(let j=0; j < names.length; j++){
+        if(names[j] == this.rationale[i].name) {
+          nameExists = true
+        }
+      }
+      if(!nameExists) {
+        names.push(this.rationale[i].name)
+      }
+      nameExists = false
+    }
     
     this.stackedSeries = []
-    for(let j=0; j < this.rationale.length; j++){
+    for(let i=0; i < names.length; i++){
+      let values = []
+      for(let j=0; j < this.rationale.length; j++){
+        if(names[i] == this.rationale[j].name) {
+          values.push(this.rationale[j].value)
+        }
+      }
       this.stackedSeries.push(
         {
-          name: this.rationale[j].name,
+          name: names[i],
           type: 'bar',
           top: 40,
-          label: {
+          /*label: {
             show: true,
             position: 'inside',
             distance: 10,
@@ -319,7 +481,7 @@ export class FactorPageComponent implements OnInit {
             rich: {
               name: {}
             }
-          },
+          },*/
           markLine: {
             show: true,
             data: linesData
@@ -327,7 +489,7 @@ export class FactorPageComponent implements OnInit {
           emphasis: {
             focus: 'series'
           },
-          data: [this.rationale[j].value]
+          data: values
         }
       )
     }
