@@ -127,9 +127,17 @@ export class FactorDatesPageComponent {
   date: any
   stackedSeries: Array<any> = []
 
+  admin: any = true
+
   constructor(private assessmentservice: AssessmentService, private http: HttpClient) { }
 
   ngOnInit(): void {
+    if(window.sessionStorage.getItem('t') !== null) {
+      if(window.sessionStorage.getItem('a') == 'false') {
+        this.admin = false
+      }
+    }
+
     this.nameDescCopy = this.nameDesc.slice(0, -2)
 
     this.dateOptionsCopy = this.dateOptions.slice(1)

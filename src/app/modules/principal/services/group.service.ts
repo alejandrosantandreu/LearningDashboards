@@ -18,7 +18,8 @@ export class BaseUrlInterceptor implements HttpInterceptor {
 @Injectable({
   providedIn: 'root'
 })
-export class GroupServiceService {
+export class GroupService {
+
   constructor(private http: HttpClient) { }
 
   private httpOptions = {

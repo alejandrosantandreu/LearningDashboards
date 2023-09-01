@@ -143,4 +143,8 @@ export class HeaderUserComponent implements OnInit {
     }
   }
 
+  logout() {
+    window.sessionStorage.clear()
+    this.router.navigateByUrl("/auth/login");
+  }
 }

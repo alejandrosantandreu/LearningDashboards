@@ -98,3 +98,15 @@ h3 {
     background-color: #d7c8b8;
     color: #000000;
   }
+
+  .nologged {
+    padding-bottom: 30%;
+  }
+
+  .links {
+    background-color: #fff;
+    color: #747474;
+    font-size: 12px;
+    padding: 0;
+    border: none;
+  }

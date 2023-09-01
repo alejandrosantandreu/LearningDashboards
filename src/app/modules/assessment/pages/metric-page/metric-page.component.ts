@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import { AssessmentService } from '@modules/assessment/services/assessment.service';
-
+import { Router } from "@angular/router";
 import { HttpClient } from '@angular/common/http';
 import { MetricModel } from '@core/metrics.model';
 
@@ -123,9 +123,17 @@ export class MetricPageComponent implements OnInit {
   barSeries: Array<any> = []
   stackedSeries: Array<any> = []
 
-  constructor(private assessmentservice: AssessmentService, private http: HttpClient) {}
+  admin: any = true
+
+  constructor(private assessmentservice: AssessmentService, private http: HttpClient, public router: Router) {}
 
   ngOnInit(): void {
+    if(window.sessionStorage.getItem('t') !== null) {
+      if(window.sessionStorage.getItem('a') == 'false') {
+        this.admin = false
+      }
+    }
+
     this.selectedRep = this.representationType[0];
 
     this.nameDescCopy = this.nameDesc.slice(0, -3)

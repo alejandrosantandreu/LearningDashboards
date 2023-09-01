@@ -158,9 +158,17 @@ export class MetricDatesPageComponent {
   barSeries: Array<any> = []
   stackedSeries: Array<any> = []
 
+  admin: any = true
+
   constructor(private assessmentservice: AssessmentService, private http: HttpClient) {}
 
   ngOnInit(): void {
+    if(window.sessionStorage.getItem('t') !== null) {
+      if(window.sessionStorage.getItem('a') == 'false') {
+        this.admin = false
+      }
+    }
+    
     this.selectedRep = this.representationType[0];
 
     this.nameDescCopy = this.nameDesc.slice(0, -3)

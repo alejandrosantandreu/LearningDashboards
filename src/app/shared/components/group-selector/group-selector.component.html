@@ -1,5 +1,9 @@
-<div class="selector">
-    <p-multiSelect  
+<div *ngIf="!admin">
+    <h2 >{{project}}</h2>
+</div>
+
+<div *ngIf="admin" class="selector">
+    <p-multiSelect 
         [options]="data"  
         (onChange)="setGroup($event)"
         defaultLabel="Select a Group" 

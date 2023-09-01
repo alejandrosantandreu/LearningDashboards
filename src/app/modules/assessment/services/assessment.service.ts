@@ -94,6 +94,5 @@ export class AssessmentService {
     {
       headers: this.headers,
     })
-    
   }
 }

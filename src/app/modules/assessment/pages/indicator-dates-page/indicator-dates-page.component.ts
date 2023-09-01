@@ -88,9 +88,17 @@ export class IndicatorDatesPageComponent {
   rationale: Array<any> = []
   stackedSeries: Array<any> = []
 
+  admin: any = true
+
   constructor(private assessmentservice: AssessmentService, private http: HttpClient) { }
 
   ngOnInit(): void {
+    if(window.sessionStorage.getItem('t') !== null) {
+      if(window.sessionStorage.getItem('a') == 'false') {
+        this.admin = false
+      }
+    }
+
     this.dateOptionsCopy = this.dateOptions.slice(1)
 
     this.iniDates() 

@@ -10,30 +10,42 @@ import { Observable, first } from 'rxjs';
 })
 export class GroupSelectorComponent implements OnInit {
 
-  groupList$?: Observable<any[]>;
   selectedGroups: any[] = []
-  currentRoute: string = ""
   data!: any[]
   dataCopy!: any[]
   asw: any[] = []
   pes: any[] = []
-  group: any[] = []
   @Output() newItemEvent = new EventEmitter<Array<any>>()
+
+  admin: any = true
+  project: any = ''
+  group: any
 
   constructor(private GroupService: GroupServiceService, private router: Router) { }
 
   ngOnInit(): void {
-    this.groupList$ = this.GroupService.getAllProjects().pipe(first())
+    if(window.sessionStorage.getItem('t') !== null) {
+      if(window.sessionStorage.getItem('a') == 'false') {
+        this.admin = false
+        this.project = window.sessionStorage.getItem('p')?.toUpperCase()
+      }
+    }
+    else this.router.navigateByUrl("/home");
     this.GroupService.getAllProjects().subscribe(
       res => {
         this.data = res
         this.dataCopy = res
         for(let i = 0; i < this.data.length; i++) {
-          if(this.data[i].name.includes('asw')) {
-            this.asw.push(this.data[i])
+          if(this.admin) {
+            if(this.data[i].name.includes('asw')) {
+              this.asw.push(this.data[i])
+            }
+            else {
+              this.pes.push(this.data[i])
+            }
           }
-          else {
-            this.pes.push(this.data[i])
+          else if(this.data[i].name == window.sessionStorage.getItem('p')) {
+            this.getGroup([this.data[i]])
           }
         }
       }
