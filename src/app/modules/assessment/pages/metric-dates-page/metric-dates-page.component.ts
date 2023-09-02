@@ -310,6 +310,7 @@ export class MetricDatesPageComponent {
     this.groups = []
     this.graphics = []
     this.rationale = []
+    if(g.length == 0) this.showedOpt = []
     for(let i = 0; i < g.length; i++) {
       this.groups.push(g[i].name);
       if(this.rangeDates.length > 0) {
