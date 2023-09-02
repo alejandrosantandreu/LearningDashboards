@@ -1,68 +1,28 @@
-<div class="default-page">  
-  <h1>Assessment: Strategic Indicators</h1>
+<div class="default-page">
+  <h1 class="subtitles">Current Assessment: Strategic Indicators</h1>
+  <app-group-selector (newItemEvent)= "selectGroupsAdmin($event)"></app-group-selector>
 
-  <app-group-selector (newItemEvent)= "selectGroup($event)"></app-group-selector>
-
-  <div class="dates">
-    <mat-form-field appearance="outline">
-      <mat-label>Enter a date range</mat-label>
-      <mat-date-range-input class="input" [rangePicker]="picker">
-        <input #from matStartDate placeholder="Start date">
-        <input #to matEndDate placeholder="End date">
-      </mat-date-range-input>
-      <mat-hint class="text">MM/DD/YYYY – MM/DD/YYYY</mat-hint>
-      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-date-range-picker #picker></mat-date-range-picker>
-    </mat-form-field>
-    <button (click)="sendDate()" (click)="selectGraph('Bar')">Submit</button>
-    <button (click)="from.value=''" (click)="to.value=''" (click)="deleteDate()">Delete Date</button>
+  <div class="multisep">
+    <p-multiSelect
+      [options]="nameDesc"
+      [disabled]="showMultiselect()"
+      (onChange)="selectShowedGraphs($event)"
+      defaultLabel="Select Indicators" 
+      optionLabel="name" 
+      display="chip">
+    </p-multiSelect>
   </div>
 
-  <ul class="graphic-type ">
-    <li *ngFor="let item of menuOptions">
-      <app-graphic-type [name]="item.name" (newItemEvent)= "selectGraph($event)"></app-graphic-type>
-    </li>
-  </ul>
+
   <div class="separator"></div>
 
-
-  <div *ngIf="pie">
-    <ul class="graphics">
-      <li *ngFor="let item of options">
-        <div echarts [options]="item.graph" class="demo-chart"></div>
-        <button *ngIf="!existsDate" (click)="show()" class="default-button">
-          <span class="default-text">More details</span>
-        </button>
-        <div *ngIf="showDetails">
-          <ul class="list">
-            <li *ngFor="let item of item.det">
-              <div echarts [options]="item" class="demo-chart"></div>
-            </li>
-          </ul>
-        </div>
-        <div class="separator-graph"></div>
-      </li>
-    </ul>
+  <div *ngIf="graphics.length > 0">
+    <p-accordion [multiple]="true">
+      <p-accordionTab *ngFor="let item of graphics; let i = index" [header]="item.stacked.title.text + ' ' + item.group" [selected]="true">
+        <div echarts [options]="item.stacked" class="demo-chart"></div>
+      </p-accordionTab>
+      <div class="separator-graph"></div>
+    </p-accordion>
   </div>
-
-  <div *ngIf="bar">
-    <ul class="graphics">
-      <li *ngFor="let item of options">
-        <div echarts [options]="item.graph" class="demo-chart"></div>
-        <button (click)="show()" class="default-button">
-          <span class="default-text">More details</span>
-        </button>
-        <div *ngIf="showDetails">
-          <ul class="list">
-            <li *ngFor="let item of item.det">
-              <div echarts [options]="item" class="demo-chart"></div>
-            </li>
-          </ul>
-        </div>
-        <div class="separator-graph"></div>
-      </li>
-    </ul>
-  </div>   
-
-  <app-back-menu [routerLink]="'/assessment'"></app-back-menu>
+  <div *ngIf="graphics.length == 0" class="ini"></div>
 </div>

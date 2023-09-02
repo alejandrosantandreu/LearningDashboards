@@ -1,9 +1,0 @@
-<div>
-    <h1 class="titles">Assessment</h1>
-    <ul class="list">
-        <li [routerLink]="item.router" *ngFor="let item of menuOptions">
-            <app-home-option [name]="item.name" [description]="item.description"></app-home-option>
-        </li>
-    </ul>
-    <app-back-menu [routerLink]="'/home'"></app-back-menu>
-</div>

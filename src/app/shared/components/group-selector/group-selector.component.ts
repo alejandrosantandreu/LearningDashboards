@@ -1,6 +1,7 @@
-import { Component, Input, OnInit, Output,  EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, Output,  EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { Router,NavigationEnd  } from '@angular/router';
 import { GroupServiceService } from '../../services/group-service.service';
+import { Observable, first } from 'rxjs';
 
 @Component({
   selector: 'app-group-selector',
@@ -9,33 +10,70 @@ import { GroupServiceService } from '../../services/group-service.service';
 })
 export class GroupSelectorComponent implements OnInit {
 
-  selectedGroup: string = "";
-  currentRoute: string = ""
-  data: Array<any> = []
-  group: Array<string> = []
-  @Output() newItemEvent = new EventEmitter<string>()
+  selectedGroups: any[] = []
+  data!: any[]
+  dataCopy!: any[]
+  asw: any[] = []
+  pes: any[] = []
+  @Output() newItemEvent = new EventEmitter<Array<any>>()
+
+  admin: any = true
+  project: any = ''
+  group: any
 
   constructor(private GroupService: GroupServiceService, private router: Router) { }
 
   ngOnInit(): void {
-    this.get()
-  }
-
-  async get(): Promise<any> {
-    this.data = await this.GroupService.getAllProjects$().toPromise()
-    
-    for(let i = 0; i < this.data.length; i++){
-      this.group.push(this.data[i].name)
+    if(window.sessionStorage.getItem('t') !== null) {
+      if(window.sessionStorage.getItem('a') == 'false') {
+        this.admin = false
+        this.project = window.sessionStorage.getItem('p')?.toUpperCase()
+      }
     }
-    this.setGroup(this.group[0]);
+    else this.router.navigateByUrl("/home");
+    this.GroupService.getAllProjects().subscribe(
+      res => {
+        this.data = res
+        this.dataCopy = res
+        for(let i = 0; i < this.data.length; i++) {
+          if(this.admin) {
+            if(this.data[i].name.includes('asw')) {
+              this.asw.push(this.data[i])
+            }
+            else {
+              this.pes.push(this.data[i])
+            }
+          }
+          else if(this.data[i].name == window.sessionStorage.getItem('p')) {
+            this.getGroup([this.data[i]])
+          }
+        }
+      }
+      
+    )
   }
 
-  setGroup(g: string): void {
-      this.selectedGroup = g
-      this.getGroup(this.selectedGroup)
+  changeOptions() {
+    this.data = this.dataCopy
+    for(let i = 0; i < this.selectedGroups.length; i++) {
+      if(this.selectedGroups[i].name.includes('asw')) {
+        this.data = this.asw
+        break
+      }
+      else if(this.selectedGroups[i].name.includes('pes')) {
+        this.data = this.pes
+        break
+      }
+    }
   }
 
-  getGroup(value: string) {
+  setGroup(g: any): void {
+    this.selectedGroups = g.value
+    this.getGroup(this.selectedGroups)
+    this.changeOptions()
+  }
+
+  getGroup(value: Array<string>) {
     this.newItemEvent.emit(value);
   }
 

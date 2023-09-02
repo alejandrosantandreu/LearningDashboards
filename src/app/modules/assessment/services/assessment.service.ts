@@ -29,64 +29,70 @@ export class AssessmentService {
   private httpOptions = {
     headers : new HttpHeaders({
       accept: 'text/html, application/xhtml+xml, */*',
-      'Content-Type': 'application/x-www-form-urlencoded',
+      'Content-Type': 'application/json',
     }),
     responseType: 'text',
   }
 
   private headers = new HttpHeaders({
     accept: 'text/html, application/xhtml+xml, */*',
-    'Content-Type': 'application/x-www-form-urlencoded',
+    'Content-Type': 'application/json',
     'Acces-Control-Allow-Origin': '*',
     'Acces-Control-Allow-Methods': 'GET, POST, PUT, OPTIONS, DELETE',
     'Acces-Control-Allow-Headers': 
       'Content-Type, Acces-Control-Allow-Headers, Authorization, X-Request-With',
   });
 
-  getAllMetrics$(project: string): Observable<any> {
+  getCategories(): Observable<any[]> {
+    return this.http.get<any[]>(`api/categories`,
+    {
+      headers: this.headers,
+    })
+  }
+
+  getAllMetrics(project: string): Observable<any[]> {
     return this.http.get<MetricModel[]>(`api/metrics/${project}`,
     {
-      headers: this.headers
+      headers: this.headers,
     })
   }
 
-  getMetricsDate$(project: string, from: string, to: string): Observable<any> {
-    return this.http.get<MetricModel[]>(`api/metrics/${project}/${from}/${to}`,
+  getMetricsDate(project: string, date: string): Observable<any> {
+    return this.http.get<MetricModel[]>(`api/metrics/${project}/${date}`,
     {
-      headers: this.headers
+      headers: this.headers,
     })
     
   }
 
-  getAllIndicators$(project: string): Observable<any> {
-    return this.http.get<IndicatorModel[]>(`api/strategicIndicators/${project}`,
+  getAllIndicators(project: string): Observable<any> {
+    return this.http.get<IndicatorModel[]>(`api/strategic-indicators/${project}`,
     {
-      headers: this.headers
+      headers: this.headers,
     })
     
   }
 
-  getIndicatorsDate$(project: string, from: string, to: string): Observable<any> {
-    return this.http.get<IndicatorModel[]>(`api/strategicIndicators/${project}/${from}/${to}`,
+  getIndicatorsDate(project: string, date: string): Observable<any> {
+    return this.http.get<IndicatorModel[]>(`api/strategic-indicators/${project}/${date}`,
     {
-      headers: this.headers
+      headers: this.headers,
     })
     
   }
 
-  getAllFactors$(project: string): Observable<any> {
-    return this.http.get<QFModel[]>(`api/qualityFactors/${project}`,
+  getAllFactors(project: string): Observable<any> {
+    return this.http.get<QFModel[]>(`api/quality-factors/${project}`,
     {
-      headers: this.headers
+      headers: this.headers,
     })
     
   }
 
-  getFactorsDate$(project: string, from: string, to: string): Observable<any> {
-    return this.http.get<QFModel[]>(`api/qualityFactors/${project}/${from}/${to}`,
+  getFactorsDate(project: string, date: string): Observable<any> {
+    return this.http.get<QFModel[]>(`api/quality-factors/${project}/${date}`,
     {
-      headers: this.headers
+      headers: this.headers,
     })
-    
   }
 }

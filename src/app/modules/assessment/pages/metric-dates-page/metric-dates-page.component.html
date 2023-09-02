@@ -1,0 +1,80 @@
+<div class="default-page">
+    <h1 class="subtitles">Metrics by Dates</h1>
+    <app-group-selector (newItemEvent)= "selectGroupsAdmin($event)"></app-group-selector>
+
+    <div class="options">
+        <div *ngIf="!showOptions()" class="margin">
+            <p-multiSelect
+              [options]="nameDesc"
+              [disabled]="showMultiselect()"
+              (onChange)="selectShowedGraphs($event)"
+              defaultLabel="Select Metric" 
+              optionLabel="name" 
+              display="chip">
+            </p-multiSelect>
+        </div>
+    
+        <div *ngIf="showOptions()" class="margin">
+            <p-multiSelect
+                [options]="nameDescCopy"
+                [disabled]="showMultiselect()"
+                (onChange)="selectShowedGraphs($event)"
+                defaultLabel="Select Metric" 
+                optionLabel="name" 
+                display="chip">
+            </p-multiSelect>
+        </div>
+
+        <div class="margin">
+            <p-calendar 
+                [(ngModel)]="rangeDates"
+                [minDate]="minDate" 
+                [maxDate]="maxDate" 
+                selectionMode="range" 
+                dateFormat="dd/mm/yy"
+                placeholder="Select Range of Dates"
+                [readonlyInput]="true"
+                [showIcon]="true"
+                (onClose)="customRange()">
+            </p-calendar>
+        </div>
+
+        <div *ngIf="dateOptions[0].date.length === 0" class="margin">
+            <p-dropdown 
+                [options]="dateOptionsCopy" 
+                [(ngModel)]="selectedDefault"
+                placeholder="Default Range of Dates"
+                optionLabel="name"
+                (onClick)="takeDefault()">
+            </p-dropdown>
+        </div>
+
+        <div *ngIf="dateOptions[0].date.length > 0" class="margin">
+            <p-dropdown 
+                [options]="dateOptions" 
+                [(ngModel)]="selectedDefault"
+                placeholder="Default Range of Dates"
+                optionLabel="name"
+                (onClick)="takeDefault()">
+            </p-dropdown>
+        </div>
+    </div>
+  
+    <div class="separator"></div>
+  
+    <div *ngIf="graphics.length > 0">
+      <p-accordion [multiple]="true">
+        <p-accordionTab *ngFor="let item of graphics; let i = index" [header]="item.bar.title.text + ' ' + item.group" [selected]="true">
+          <!--<div class="radiobutton" *ngFor="let rep of representationType">
+            <p-radioButton  [inputId]="rep.name" name="rep" [value]="rep" [(ngModel)]="item.select" (onChange)="changeSelected(i, $event)"></p-radioButton>
+            <label class="label" [for]="rep.name">{{ rep.name }}</label>
+          </div>-->
+          <div *ngIf="item.select.name == 'Bar Chart'" echarts [options]="item.bar" class="demo-chart"></div>
+          <div *ngIf="item.select.name == 'Stacked Chart'" echarts [options]="item.stacked" class="demo-chart"></div>
+        </p-accordionTab>
+        <div class="separator-graph"></div>
+      </p-accordion>
+    </div>
+    <div *ngIf="graphics.length == 0" class="ini"></div>
+  </div>
+  

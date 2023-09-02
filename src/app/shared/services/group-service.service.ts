@@ -1,6 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
 import { Observable, of } from 'rxjs';
 
 @Injectable()
@@ -25,24 +24,21 @@ export class GroupServiceService {
   private httpOptions = {
     headers : new HttpHeaders({
       accept: 'text/html, application/xhtml+xml, */*',
-      'Content-Type': 'application/x-www-form-urlencoded',
+      'Content-Type': 'application/json',
     }),
     responseType: 'text',
   }
 
-  getAllProjects$(): Observable<any> {
+  getAllProjects(): Observable<any[]> {
     let headers = new HttpHeaders({
       accept: 'text/html, application/xhtml+xml, */*',
-      'Content-Type': 'application/x-www-form-urlencoded',
+      'Content-Type': 'application/json',
       'Acces-Control-Allow-Origin': '*',
       'Acces-Control-Allow-Methods': 'GET, POST, PUT, OPTIONS, DELETE',
       'Acces-Control-Allow-Headers': 
         'Content-Type, Acces-Control-Allow-Headers, Authorization, X-Request-With',
     });
   
-    return this.http.get<any>(`api/projects`,
-    {
-      headers: headers
-    })
+    return this.http.get<any[]>(`api/projects`);
   }
 }
