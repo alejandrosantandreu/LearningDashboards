@@ -6,14 +6,20 @@ import { IndicatorPageComponent } from './pages/indicator-page/indicator-page.co
 import { FactorPageComponent } from './pages/factor-page/factor-page.component';
 import { MetricPageComponent } from './pages/metric-page/metric-page.component';
 import { SharedModule } from '@shared/shared.module';
-import { AssessmentPageComponent } from './pages/assessment-page/assessment-page.component';
-import { MatNativeDateModule } from '@angular/material/core';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MaterialModule } from '../../../material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { PopupComponent } from './pages/popup/popup.component';
 import { AssessmentService } from '@modules/assessment/services/assessment.service';
 import { HttpClientModule } from '@angular/common/http';
+import { CalendarModule } from 'primeng/calendar';
+import { ButtonModule } from 'primeng/button';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { AccordionModule } from 'primeng/accordion';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { ProgressBarModule } from 'primeng/progressbar';
+import { ToastModule } from 'primeng/toast';
+import { MetricDatesPageComponent } from './pages/metric-dates-page/metric-dates-page.component';
+import { FactorDatesPageComponent } from './pages/factor-dates-page/factor-dates-page.component';
+import { IndicatorDatesPageComponent } from './pages/indicator-dates-page/indicator-dates-page.component';
+import { DropdownModule } from 'primeng/dropdown';
 
 
 @NgModule({
@@ -21,20 +27,26 @@ import { HttpClientModule } from '@angular/common/http';
     IndicatorPageComponent,
     FactorPageComponent,
     MetricPageComponent,
-    AssessmentPageComponent,
-    PopupComponent
+    MetricDatesPageComponent,
+    FactorDatesPageComponent,
+    IndicatorDatesPageComponent,
   ],
   imports: [
     CommonModule,
     AssessmentRoutingModule,
     SharedModule,
     NgxEchartsModule,
-    MatNativeDateModule,
-    MaterialModule,
     FormsModule,
     ReactiveFormsModule,
-    MatDialogModule,
-    HttpClientModule
+    HttpClientModule,
+    CalendarModule,
+    ButtonModule,
+    MultiSelectModule,
+    AccordionModule,
+    RadioButtonModule,
+    ProgressBarModule,
+    ToastModule,
+    DropdownModule
   ],
   providers: [AssessmentService],
   bootstrap: [MetricPageComponent]

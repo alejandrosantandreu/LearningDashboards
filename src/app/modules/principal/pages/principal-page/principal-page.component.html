@@ -1,8 +1,42 @@
-<div>
-    <h1 class="titles">Learning Dashboards</h1>
-    <ul class="list">
-      <li [routerLink]="item.router" *ngFor="let item of menuOptions">
-        <app-home-option [name]="item.name" [description]="item.description"></app-home-option>
-      </li>
-    </ul>
+<div class="default-page">
+  <p-dialog
+	[(visible)]="!login" [modal]="true"
+	[draggable]="false" [resizable]="false" [closable]="false">
+
+    <div class="login-box">
+      <h1>Access</h1>
+      <h2>To access the page identify yourself</h2>
+      <div>
+        <div>
+          <a href="/auth">Login</a>
+        </div>
+      </div>
+    </div>
+  </p-dialog>
+  <h1 class="subtitles">Home</h1>  
+
+  <div *ngIf="!login" class="nologged"></div>
+
+  <div *ngIf="login">
+    <div *ngIf="!admin" class="info">
+      <div>
+        <h2>{{project}}</h2>
+      </div>
+      <div>
+        <p><a class="links" [href]="taigaURL">Taiga</a></p>
+        <p><a class="links" [href]="githubURL">GitHub</a></p>
+      </div>
+    </div>
+  
+    <div *ngFor="let item of nameDesc">
+      <h3>{{item.name}}</h3>
+      <div class="separator"></div>
+      <div class="content">
+        <div *ngFor="let t of item.options" >
+          <button pButton [routerLink]="t.route">{{t.text}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>

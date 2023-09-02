@@ -1,0 +1,18 @@
+::ng-deep .p-card {
+    box-shadow: none;
+    background: none;
+    display: flex;
+  }
+  
+  ::ng-deep .p-card .p-card-body {
+    padding: 0;
+    width: 100%;
+  }
+  
+  ::ng-deep .p-card .p-card-content {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: space-between;
+  }
+  

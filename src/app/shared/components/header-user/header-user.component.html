@@ -1,7 +1,58 @@
-<div class="header-page">
-    <div class="side-bar__separator"></div>
-    <i [routerLink]="'/home'" class="uil uil-estate default-home"></i>
-
-    <i [routerLink]="'/setting'" class="uil uil-setting default-setting"></i>
-    <i [routerLink]="'/auth'" class="uil uil-user-circle default-user"></i>
-</div>
+<div class="header">
+    <div class="header_top">
+      <div class="header_top_content">
+        <div class="logo"></div>
+        <div class="header-user">
+          <div class="separador"></div>
+          <button pButton (click)="logout()" type="submit">
+            <span class="exit_to_app"></span>Logout
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="header_bottom">
+    <div class="header_bottom_content">
+        <div class="entitat">Learning Dashboard</div>
+    </div>
+    </div>
+    <div class="header_menu">
+      <ul *ngIf="home">
+        <li><p-menubar [model]="homeopt" class="act"></p-menubar></li>
+        <div class="separador-gris"></div>
+        <li><p-menubar [model]="stOptions"></p-menubar></li>
+        <div class="separador-gris"></div>
+        <li><p-menubar [model]="fOptions"></p-menubar></li>
+        <div class="separador-gris"></div>
+        <li><p-menubar [model]="mOptions"></p-menubar></li>
+      </ul>
+      <ul *ngIf="st">
+        <li><p-menubar [model]="homeopt"></p-menubar></li>
+        <div class="separador-gris"></div>
+        <li><p-menubar [model]="stOptions" class="act"></p-menubar></li>
+        <div class="separador-gris"></div>
+        <li><p-menubar [model]="fOptions"></p-menubar></li>
+        <div class="separador-gris"></div>
+        <li><p-menubar [model]="mOptions"></p-menubar></li>
+      </ul>
+      <ul *ngIf="fact">
+        <li><p-menubar [model]="homeopt"></p-menubar></li>
+        <div class="separador-gris"></div>
+        <li><p-menubar [model]="stOptions"></p-menubar></li>
+        <div class="separador-gris"></div>
+        <li><p-menubar [model]="fOptions" class="act"></p-menubar></li>
+        <div class="separador-gris"></div>
+        <li><p-menubar [model]="mOptions"></p-menubar></li>
+      </ul>
+      <ul *ngIf="met">
+        <li><p-menubar [model]="homeopt"></p-menubar></li>
+        <div class="separador-gris"></div>
+        <li><p-menubar [model]="stOptions"></p-menubar></li>
+        <div class="separador-gris"></div>
+        <li><p-menubar [model]="fOptions"></p-menubar></li>
+        <div class="separador-gris"></div>
+        <li><p-menubar [model]="mOptions" class="act"></p-menubar></li>
+      </ul>
+    
+    </div>
+   
+  </div>

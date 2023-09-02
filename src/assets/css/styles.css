@@ -1,0 +1,106 @@
+body{
+    margin: 0;
+    font-family: "Open Sans", sans-serif;
+}
+
+.header{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+
+}
+
+.header_top{
+    background: #333;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    height: 50px;
+    padding: 0 15px;
+}
+
+.header_top_content{
+    width: 1024px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header_top_content .logo{
+    display: flex;
+    background-image: url(../img/logo_fib.svg);
+    background-repeat: no-repeat;
+    background-position-y: center;
+    width: 150px;
+    height: 30px;
+}
+
+.header_bottom{
+    background: #ae9f8e;
+    position: fixed;
+    top: 50px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    height: 45px;
+    padding: 0 15px;
+}
+
+.header_bottom_content{
+    width: 1024px;
+    display: flex;
+    align-items: center;
+}
+
+.header_bottom .entitat{
+    color: #fff;
+    font-size: 18px;
+}
+
+.footer{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #EFEFEF;
+    display: flex;
+    justify-content: center;
+    height: 135px;
+}
+
+.footer_content{
+    width: 1024px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 135px;
+    padding: 0 15px;
+    height: 40px;
+    border-top: 1px solid #999;
+    margin-top: 40px;
+    padding-top: 20px;
+}
+
+
+.footer_content .text_legal{
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 15px;
+    color: #666666;
+}
+
+
+
+@media (max-width: 575.98px) {
+    .header_bottom .entitat{
+        color: #fff;
+        font-size: 14px;
+    }
+}
