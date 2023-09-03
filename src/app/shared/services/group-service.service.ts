@@ -1,6 +1,15 @@
 import { Inject, Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpEvent,
+  HttpHandler,
+  HttpHeaders,
+  HttpInterceptor,
+  HttpRequest,
+} from '@angular/common/http';
 import { Observable, of } from 'rxjs';
+import { environment } from '../../../environments/environment';
+
 
 @Injectable()
 export class BaseUrlInterceptor implements HttpInterceptor {
@@ -19,7 +28,7 @@ export class BaseUrlInterceptor implements HttpInterceptor {
   providedIn: 'root'
 })
 export class GroupServiceService {
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   private httpOptions = {
     headers : new HttpHeaders({
@@ -29,16 +38,26 @@ export class GroupServiceService {
     responseType: 'text',
   }
 
-  getAllProjects(): Observable<any[]> {
-    let headers = new HttpHeaders({
-      accept: 'text/html, application/xhtml+xml, */*',
-      'Content-Type': 'application/json',
-      'Acces-Control-Allow-Origin': '*',
-      'Acces-Control-Allow-Methods': 'GET, POST, PUT, OPTIONS, DELETE',
-      'Acces-Control-Allow-Headers': 
-        'Content-Type, Acces-Control-Allow-Headers, Authorization, X-Request-With',
+  private headers = new HttpHeaders({
+    accept: 'text/html, application/xhtml+xml, */*',
+    'Content-Type': 'application/json',
+    'Acces-Control-Allow-Origin': '*',
+    'Acces-Control-Allow-Methods': 'GET, POST, PUT, OPTIONS, DELETE',
+    'Acces-Control-Allow-Headers': 
+      'Content-Type, Acces-Control-Allow-Headers, Authorization, X-Request-With',
+  });
+
+  getAllProjects(): Observable<any> {
+    //return this.http.get<any[]>(`api/projects`);
+    /*return this.http.get(`api/projects`, 
+    {
+      headers: this.headers,
+      responseType: 'json',
+    });*/
+
+    return this.http.get(`${environment.api}/projects`,
+    {
+      headers: this.headers
     });
-  
-    return this.http.get<any[]>(`api/projects`);
   }
 }

@@ -43,22 +43,22 @@ export class AssessmentService {
       'Content-Type, Acces-Control-Allow-Headers, Authorization, X-Request-With',
   });
 
-  getCategories(): Observable<any[]> {
-    return this.http.get<any[]>(`api/categories`,
+  getCategories(): Observable<any> {
+    return this.http.get<any>(`${environment.api}/categories`,
     {
-      headers: this.headers,
+      headers: this.headers
     })
   }
 
-  getAllMetrics(project: string): Observable<any[]> {
-    return this.http.get<MetricModel[]>(`api/metrics/${project}`,
+  getAllMetrics(project: string): Observable<any> {
+    return this.http.get<MetricModel>(`${environment.api}/metrics/${project}`,
     {
       headers: this.headers,
     })
   }
 
   getMetricsDate(project: string, date: string): Observable<any> {
-    return this.http.get<MetricModel[]>(`api/metrics/${project}/${date}`,
+    return this.http.get<MetricModel>(`${environment.api}/metrics/${project}/${date}`,
     {
       headers: this.headers,
     })
@@ -66,7 +66,7 @@ export class AssessmentService {
   }
 
   getAllIndicators(project: string): Observable<any> {
-    return this.http.get<IndicatorModel[]>(`api/strategic-indicators/${project}`,
+    return this.http.get<IndicatorModel>(`${environment.api}/strategic-indicators/${project}`,
     {
       headers: this.headers,
     })
@@ -74,7 +74,7 @@ export class AssessmentService {
   }
 
   getIndicatorsDate(project: string, date: string): Observable<any> {
-    return this.http.get<IndicatorModel[]>(`api/strategic-indicators/${project}/${date}`,
+    return this.http.get<IndicatorModel>(`${environment.api}/strategic-indicators/${project}/${date}`,
     {
       headers: this.headers,
     })
@@ -82,7 +82,7 @@ export class AssessmentService {
   }
 
   getAllFactors(project: string): Observable<any> {
-    return this.http.get<QFModel[]>(`api/quality-factors/${project}`,
+    return this.http.get<QFModel>(`${environment.api}/quality-factors/${project}`,
     {
       headers: this.headers,
     })
@@ -90,7 +90,7 @@ export class AssessmentService {
   }
 
   getFactorsDate(project: string, date: string): Observable<any> {
-    return this.http.get<QFModel[]>(`api/quality-factors/${project}/${date}`,
+    return this.http.get<QFModel>(`${environment.api}/quality-factors/${project}/${date}`,
     {
       headers: this.headers,
     })

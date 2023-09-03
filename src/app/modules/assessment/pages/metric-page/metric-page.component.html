@@ -29,17 +29,24 @@
 
   <div *ngIf="graphics.length > 0 || pBar.length > 0">
     <p-accordion [multiple]="true">
-      <p-accordionTab *ngFor="let item of graphics; let i = index" [header]="item.pie.title.text + ' ' + item.group" [selected]="true">
-        <div class="radiobutton" *ngFor="let rep of representationType">
-          <p-radioButton  [inputId]="rep.name" name="rep" [value]="rep" [(ngModel)]="item.select" (onChange)="changeSelected(i, $event)"></p-radioButton>
-          <label class="label" [for]="rep.name">{{ rep.name }}</label>
+      <p-accordionTab *ngFor="let item of graphics; let i = index" [header]="item.stacked.title.text + ' ' + item.group" [selected]="true">
+        <div *ngIf="item.type == 'tipo1'">
+          <div class="radiobutton" *ngFor="let rep of representationType2">
+            <p-radioButton  [inputId]="rep.name" name="rep" [value]="rep" [(ngModel)]="item.select" (onChange)="changeSelected(i, $event)"></p-radioButton>
+            <label class="label" [for]="rep.name">{{ rep.name }}</label>
+          </div>
+          <div *ngIf="item.select.name == 'Stacked Chart'" echarts [options]="item.stacked" class="demo-chart"></div>
+          <p-progressBar *ngIf="item.select.name == 'Progress Bar'" [value]="item.value"></p-progressBar>
         </div>
-        <div *ngIf="item.select.name == 'Pie Chart'" echarts [options]="item.pie" class="demo-chart"></div>
-        <div *ngIf="item.select.name == 'Bar Chart'" echarts [options]="item.bar" class="demo-chart"></div>
-        <div *ngIf="item.select.name == 'Stacked Chart'" echarts [options]="item.stacked" class="demo-chart"></div>
-      </p-accordionTab>
-      <p-accordionTab *ngFor="let item of pBar; let i = index" [header]="item.name + ' ' + item.group" [selected]="true">
-        <p-progressBar [value]="item.value"></p-progressBar>
+        <div *ngIf="item.type == 'tipo2'">
+          <div class="radiobutton" *ngFor="let rep of representationType">
+            <p-radioButton  [inputId]="rep.name" name="rep" [value]="rep" [(ngModel)]="item.select" (onChange)="changeSelected(i, $event)"></p-radioButton>
+            <label class="label" [for]="rep.name">{{ rep.name }}</label>
+          </div>
+          <div *ngIf="item.select.name == 'Pie Chart'" echarts [options]="item.pie" class="demo-chart"></div>
+          <div *ngIf="item.select.name == 'Bar Chart'" echarts [options]="item.bar" class="demo-chart"></div>
+          <div *ngIf="item.select.name == 'Stacked Chart'" echarts [options]="item.stacked" class="demo-chart"></div>
+        </div>
       </p-accordionTab>
       <div class="separator-graph"></div>
     </p-accordion>

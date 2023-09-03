@@ -98,6 +98,15 @@ export class MetricPageComponent implements OnInit {
     }
   ]
 
+  representationType2: Array<any> = [
+    {
+      name: 'Stacked Chart'
+    },
+    {
+      name: 'Progress Bar'
+    }
+  ]
+
   selectedRep: any = null
 
   metrics!: MetricModel[]
@@ -185,6 +194,7 @@ export class MetricPageComponent implements OnInit {
       }
       else {
         this.takeDataTipo1(i, g)
+        this.generateGraphicsTipo1(i, g)
       }
     }
   }
@@ -234,7 +244,7 @@ export class MetricPageComponent implements OnInit {
     let name2 = aux[2].slice(aux[2].indexOf(',') + 2)
     let val2 = name2.slice(name2.indexOf('=') + 1, name2.indexOf('}'))
     name2 = name2.slice(0, name2.indexOf('='))
-    
+
     this.rationale.push({ n1: name1, v1: parseFloat(val1).toPrecision(2), n2: name2, v2: parseFloat(val2).toPrecision(2)});
     /*if (parseInt(val1) > parseInt(val2)) {
       this.rationale.push({ n1: name1, v1: parseInt(val1) - parseInt(val2), n2: name2, v2: parseInt(val2)});
@@ -245,6 +255,8 @@ export class MetricPageComponent implements OnInit {
   }
 
   takeDataTipo1(j: number, g: string): void {
+    this.rationale = []
+    this.dataNames = ['', '']
     for(let i=0; i < this.metrics.length; i++){
       if ((this.metrics[i].description == this.showedOpt[j].description) 
       && ((this.metrics[i].description == '' && this.metrics[i].name == this.showedOpt[j].name) || this.metrics[i].description != '')) {
@@ -442,6 +454,7 @@ export class MetricPageComponent implements OnInit {
 
     let aux = {
       group: g,
+      type: 'tipo2',
       pie: this.pie,
       bar: this.bar,
       stacked: this.stacked,
@@ -449,6 +462,65 @@ export class MetricPageComponent implements OnInit {
     }
     this.graphics.push(aux)
   }
+
+  generateGraphicsTipo1(j: number, g: string) { 
+    this.createStackedSeries(j)
+    this.stacked = {
+      title: {
+        text: this.showedOpt[j].name,
+        subtext: this.showedOpt[j].description,
+        left: 'center',
+      },
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'shadow'
+        }
+      },
+      legend: {
+        orient: 'horizontal',
+        bottom: 0,
+        itemGap: 20,
+        
+      },
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '20%',
+        containLabel: true
+      },
+      toolbox: {
+        show: true,
+        orient: 'vertical',
+        left: 'right',
+        top: 'bottom',
+        feature: {
+          mark: { show: true },
+          restore: { show: true },
+          saveAsImage: { show: true }
+        }
+      },
+      xAxis: {
+        type: 'category',
+        axisTick: { show: false },
+        data: [this.rationale[0].n1 + " vs " + this.rationale[0].n2]
+      },
+      yAxis: {
+        type: 'value'
+      },
+      series: this.stackedSeries
+    }
+
+    let aux = {
+      group: g,
+      type: 'tipo1',
+      stacked: this.stacked,
+      pBar: this.pBar,
+      select: this.representationType2[0]
+    }
+    this.graphics.push(aux)
+  }
+  
 
   createBarSeries(i: number): void {
     this.names = []
