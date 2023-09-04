@@ -8,7 +8,7 @@
       <h2>To access the page identify yourself</h2>
       <div>
         <div>
-          <a href="/auth">Login</a>
+          <a class="log" href="/auth">Login</a>
         </div>
       </div>
     </div>
@@ -25,6 +25,7 @@
       <div>
         <p><a class="links" [href]="taigaURL">Taiga</a></p>
         <p><a class="links" [href]="githubURL">GitHub</a></p>
+        <p><a *ngIf="prtURL != null" class="links" [href]="prtURL">Spread Sheet</a></p>
       </div>
     </div>
   

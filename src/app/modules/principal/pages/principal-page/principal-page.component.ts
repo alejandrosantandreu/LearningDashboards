@@ -66,6 +66,7 @@ export class PrincipalPageComponent implements OnInit {
   data!: any[]
   taigaURL: any = ''
   githubURL: any = ''
+  prtURL: any = null
 
   constructor(private cdref: ChangeDetectorRef, private groupService: GroupService) { }
 
@@ -86,6 +87,7 @@ export class PrincipalPageComponent implements OnInit {
               if(this.data[i].name == window.sessionStorage.getItem('p')) {
                 this.taigaURL = this.data[i].taigaURL
                 this.githubURL = this.data[i].githubURL
+                this.prtURL = this.data[i].prtURL
                 continue
               }
             }

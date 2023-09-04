@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class BaseUrlInterceptor implements HttpInterceptor {
@@ -30,16 +31,7 @@ export class GroupService {
     responseType: 'text',
   }
 
-  getAllProjects(): Observable<any[]> {
-    let headers = new HttpHeaders({
-      accept: 'text/html, application/xhtml+xml, */*',
-      'Content-Type': 'application/json',
-      'Acces-Control-Allow-Origin': '*',
-      'Acces-Control-Allow-Methods': 'GET, POST, PUT, OPTIONS, DELETE',
-      'Acces-Control-Allow-Headers': 
-        'Content-Type, Acces-Control-Allow-Headers, Authorization, X-Request-With',
-    });
-  
-    return this.http.get<any[]>(`api/projects`);
+  getAllProjects(): Observable<any[]> {  
+    return this.http.get<any[]>(`${environment.api}/projects`);
   }
 }

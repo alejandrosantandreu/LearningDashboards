@@ -57,12 +57,22 @@ h3 {
   }
   
   a {
-    background-color: #908375;
+    background-color: #ae9f8e;
     color: #fff;
     font-size: 22px;
     padding: 0.5em 1em;
     border: none;
     border-radius: 5px;
+  }
+
+  .log {
+    text-decoration-line: none;
+  }
+
+  .log:hover {
+    text-decoration-color: currentcolor;
+    background-color: #908375;
+    text-decoration-line: solid;
   }
 
   .separator {
