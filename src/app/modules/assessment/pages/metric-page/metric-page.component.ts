@@ -27,6 +27,10 @@ export class MetricPageComponent implements OnInit {
       description: 'Percentage of tasks made by a student with respect to the total number of tasks in the project'
     },
     {
+      name: 'Closed Tasks with Actual Effort Information',
+      description: 'Percentage of closed tasks with actual effort information added with respect to the total number of closed tasks in this sprint'
+    },
+    {
       name: 'Closed Tasks',
       description: 'Percentage of closed tasks made by a student with respect to the total number of tasks assigned to student'
     },
@@ -100,7 +104,7 @@ export class MetricPageComponent implements OnInit {
 
   representationType2: Array<any> = [
     {
-      name: 'Stacked Chart'
+      name: 'Bar Chart'
     },
     {
       name: 'Progress Bar'
@@ -165,7 +169,7 @@ export class MetricPageComponent implements OnInit {
         this.metrics = res
         this.nMembers = 0
         for(let i = 0; i < this.metrics.length; i++) {
-          if(this.metrics[i].description == this.nameDesc[2].description) {
+          if(this.metrics[i].description == this.nameDesc[3].description) {
             this.nMembers++
           }
         }
@@ -188,7 +192,7 @@ export class MetricPageComponent implements OnInit {
     for(let i = 0; i < this.showedOpt.length; i++) {
       if(this.showedOpt[i].name == 'Assigned Tasks' || this.showedOpt[i].name == 'Closed Tasks' || 
       this.showedOpt[i].name == 'Commits' || this.showedOpt[i].name == 'Modified lines' 
-      || this.showedOpt[i].name == 'Unassigned tasks' || this.showedOpt[i].name == 'Total hours') {
+      || this.showedOpt[i].name == 'Total hours') {
         this.takeDataTipo2(i)
         this.generateGraphics(i, g)
       }
@@ -245,22 +249,24 @@ export class MetricPageComponent implements OnInit {
     let val2 = name2.slice(name2.indexOf('=') + 1, name2.indexOf('}'))
     name2 = name2.slice(0, name2.indexOf('='))
 
-    this.rationale.push({ n1: name1, v1: parseFloat(val1).toPrecision(2), n2: name2, v2: parseFloat(val2).toPrecision(2)});
-    /*if (parseInt(val1) > parseInt(val2)) {
-      this.rationale.push({ n1: name1, v1: parseInt(val1) - parseInt(val2), n2: name2, v2: parseInt(val2)});
+    //this.rationale.push({ n1: name1, v1: parseFloat(val1).toPrecision(2), n2: name2, v2: parseFloat(val2).toPrecision(2)});
+    if (parseInt(val1) > parseInt(val2)) {
+      this.rationale.push({ n1: name1, v1: (parseInt(val1) - parseInt(val2)).toPrecision(2), n2: name2, v2: parseInt(val2).toPrecision(2)});
     }
     else {
-      this.rationale.push({ n1: name1, v1: parseInt(val1), n2: name2, v2: parseInt(val2) - parseInt(val1)});
-    }*/
+      this.rationale.push({ n1: name2, v1: (parseInt(val2) - parseInt(val1)).toPrecision(2), n2: name1, v2: parseInt(val1).toPrecision(2)});
+    }
   }
 
   takeDataTipo1(j: number, g: string): void {
     this.rationale = []
     this.dataNames = ['', '']
+    this.dataValues = []
     for(let i=0; i < this.metrics.length; i++){
       if ((this.metrics[i].description == this.showedOpt[j].description) 
       && ((this.metrics[i].description == '' && this.metrics[i].name == this.showedOpt[j].name) || this.metrics[i].description != '')) {
         this.pBar.push({ value: this.metrics[i].value_description*100, name: this.metrics[i].name, group: g})
+        this.dataValues.push(this.metrics[i].value_description)
         this.getRat(this.metrics[i].rationale)
       }
     }
@@ -518,6 +524,7 @@ export class MetricPageComponent implements OnInit {
       pBar: this.pBar,
       select: this.representationType2[0]
     }
+    console.log(aux)
     this.graphics.push(aux)
   }
   
@@ -701,7 +708,7 @@ export class MetricPageComponent implements OnInit {
     }
   }
 
-  createStackedSeries(i: number) {
+  createStackedSeries(m: number) {
     this.names = []
     let nameExists = false
     for(let i=0; i < this.dataNames.length; i++){
@@ -723,12 +730,64 @@ export class MetricPageComponent implements OnInit {
       v2Data.push(this.rationale[j].v2)
     }
     this.stackedSeries = []
-    for(let j=0; j < this.rationale.length; j++){
+
+    if(this.showedOpt[m].name != 'Tasks Standard Deviation') {
+      for(let j=0; j < this.rationale.length; j++){
+        this.stackedSeries.push(
+          {
+            name: this.rationale[0].n1 + " " + this.names[j],
+            type: 'bar',
+            stack: this.names[j],
+            top: 40,
+            label: {
+              show: true,
+              position: 'inside',
+              distance: 10,
+              align: 'left',
+              rotate: 90,
+              formatter: '{c}',
+              fontSize: 16,
+              rich: {
+                name: {}
+              }
+            },
+            emphasis: {
+              focus: 'series'
+            },
+            data: [this.rationale[j].v1]
+          }
+        )
+        this.stackedSeries.push(
+          {
+            name: this.rationale[0].n2 + " " + this.names[j],
+            type: 'bar',
+            stack: this.names[j],
+            top: 40,
+            label: {
+              show: true,
+              position: 'inside',
+              distance: 10,
+              align: 'left',
+              rotate: 90,
+              formatter: '{c}',
+              fontSize: 16,
+              rich: {
+                name: {}
+              }
+            },
+            emphasis: {
+              focus: 'series'
+            },
+            data: [this.rationale[j].v2]
+          }
+        )
+      }
+    }
+    else {
       this.stackedSeries.push(
         {
-          name: this.rationale[0].n1 + " " + this.names[j],
+          name: this.showedOpt[m].name,
           type: 'bar',
-          stack: this.names[j],
           top: 40,
           label: {
             show: true,
@@ -745,31 +804,7 @@ export class MetricPageComponent implements OnInit {
           emphasis: {
             focus: 'series'
           },
-          data: [this.rationale[j].v1]
-        }
-      )
-      this.stackedSeries.push(
-        {
-          name: this.rationale[0].n2 + " " + this.names[j],
-          type: 'bar',
-          stack: this.names[j],
-          top: 40,
-          label: {
-            show: true,
-            position: 'inside',
-            distance: 10,
-            align: 'left',
-            rotate: 90,
-            formatter: '{c}',
-            fontSize: 16,
-            rich: {
-              name: {}
-            }
-          },
-          emphasis: {
-            focus: 'series'
-          },
-          data: [this.rationale[j].v2]
+          data: this.dataValues
         }
       )
     }

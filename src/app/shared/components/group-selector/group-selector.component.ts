@@ -29,6 +29,9 @@ export class GroupSelectorComponent implements OnInit {
         this.admin = false
         this.project = window.sessionStorage.getItem('p')?.toUpperCase()
       }
+      else if(window.sessionStorage.getItem('p') !== null) {
+        this.project = window.sessionStorage.getItem('p')
+      }
     }
     else this.router.navigateByUrl("/home");
     this.GroupService.getAllProjects().subscribe(
@@ -46,6 +49,16 @@ export class GroupSelectorComponent implements OnInit {
           }
           else if(this.data[i].name == window.sessionStorage.getItem('p')) {
             this.getGroup([this.data[i]])
+          }
+        }
+        if(this.admin && this.project != '') {
+          if(this.project.includes('asw')) {
+            this.data = this.asw
+            this.dataCopy = this.asw
+          }
+          else if(this.project.includes('pes')) {
+            this.data = this.pes
+            this.dataCopy = this.pes
           }
         }
       }

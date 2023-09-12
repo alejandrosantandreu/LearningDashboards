@@ -256,7 +256,7 @@ export class FactorPageComponent implements OnInit {
     this.graphics.push(aux)
   }
 
-  createStackedSeries(i: number) {
+  createStackedSeries(f: number) {
     let catData = []
 
     for(let i = 0; i < this.categories.length; i++) {
@@ -289,26 +289,27 @@ export class FactorPageComponent implements OnInit {
       }
     }
 
-    linesData.push(
-      {
-        name: this.datos[0].name,
-        label: {
-          show: true,
-          position: 'end',
-          distance: 10,
-          align: 'left',
-          formatter: '{b}\n{c}',
-          fontSize: 10
-        },
-        yAxis: this.datos[0].value,
-        lineStyle: {
-          color: avgCol,
-          type: 'solid'
-        },
-      }
-    )
-
-    console.log(catData)
+    
+    if(this.showedOpt[f].name != 'Commits Contribution' && this.showedOpt[f].name != 'Commits Management' && this.showedOpt[f].name != 'Modified Lines Contribution') {
+      linesData.push(
+        {
+          name: this.datos[0].name,
+          label: {
+            show: true,
+            position: 'end',
+            distance: 10,
+            align: 'left',
+            formatter: '{b}\n{c}',
+            fontSize: 10
+          },
+          yAxis: this.datos[0].value,
+          lineStyle: {
+            color: avgCol,
+            type: 'solid'
+          },
+        }
+      )
+    }
     
     this.stackedSeries = []
     for(let j=0; j < this.rationale.length; j++){

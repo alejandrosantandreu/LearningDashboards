@@ -35,8 +35,11 @@
             <p-radioButton  [inputId]="rep.name" name="rep" [value]="rep" [(ngModel)]="item.select" (onChange)="changeSelected(i, $event)"></p-radioButton>
             <label class="label" [for]="rep.name">{{ rep.name }}</label>
           </div>
-          <div *ngIf="item.select.name == 'Stacked Chart'" echarts [options]="item.stacked" class="demo-chart"></div>
-          <p-progressBar *ngIf="item.select.name == 'Progress Bar'" [value]="item.value"></p-progressBar>
+          <div *ngIf="item.select.name == 'Bar Chart'" echarts [options]="item.stacked" class="demo-chart"></div>
+          <div *ngIf="item.select.name == 'Progress Bar'" class="lab">
+            <h3>{{item.pBar[0].name}}</h3>
+            <p-progressBar [value]="item.pBar[0].value"></p-progressBar>
+          </div>
         </div>
         <div *ngIf="item.type == 'tipo2'">
           <div class="radiobutton" *ngFor="let rep of representationType">

@@ -249,7 +249,6 @@ export class FactorDatesPageComponent {
     this.groupCat = []
     let aux = this.qualityFactors[6].rationale.slice(this.qualityFactors[6].rationale.indexOf('category'))
     let x = aux.slice(aux.indexOf(':') + 2, aux.indexOf('con') - 2)
-
     for(let i = 0; i < this.categories.length; i++) {
       if(this.categories[i].name.includes(x)) {
         this.groupCat.push(this.categories[i])
@@ -400,7 +399,7 @@ export class FactorDatesPageComponent {
     this.graphics.push(aux)
   }
 
-  createStackedSeries(i: number) {
+  createStackedSeries(f: number) {
     let catData = []
 
     for(let i = 0; i < this.categories.length; i++) {
@@ -433,24 +432,26 @@ export class FactorDatesPageComponent {
       }
     }
 
-    linesData.push(
-      {
-        name: this.datos[0].name,
-        label: {
-          show: true,
-          position: 'end',
-          distance: 10,
-          align: 'left',
-          formatter: '{b}\n{c}',
-          fontSize: 10
-        },
-        yAxis: this.datos[0].value,
-        lineStyle: {
-          color: avgCol,
-          type: 'solid'
-        },
-      }
-    )
+    if(this.showedOpt[f].name != 'Commits Contribution' && this.showedOpt[f].name != 'Commits Management' && this.showedOpt[f].name != 'Modified Lines Contribution') {
+      linesData.push(
+        {
+          name: this.datos[0].name,
+          label: {
+            show: true,
+            position: 'end',
+            distance: 10,
+            align: 'left',
+            formatter: '{b}\n{c}',
+            fontSize: 10
+          },
+          yAxis: this.datos[0].value,
+          lineStyle: {
+            color: avgCol,
+            type: 'solid'
+          },
+        }
+      )
+    }
 
     let names: any[] = []
     let nameExists = false
