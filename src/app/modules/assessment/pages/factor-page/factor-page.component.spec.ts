@@ -3,13 +3,20 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FactorPageComponent } from './factor-page.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatNativeDateModule } from '@angular/material/core';
 import { AssessmentRoutingModule } from '@modules/assessment/assessment-routing.module';
 import { AssessmentService } from '@modules/assessment/services/assessment.service';
 import { SharedModule } from '@shared/shared.module';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterTestingModule } from '@angular/router/testing';
+import { CalendarModule } from 'primeng/calendar';
+import { ButtonModule } from 'primeng/button';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { AccordionModule } from 'primeng/accordion';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { ProgressBarModule } from 'primeng/progressbar';
+import { ToastModule } from 'primeng/toast';
+import { DropdownModule } from 'primeng/dropdown';
 
 describe('FactorPageComponent', () => {
   let component: FactorPageComponent;
@@ -22,11 +29,18 @@ describe('FactorPageComponent', () => {
         AssessmentRoutingModule,
         SharedModule,
         NgxEchartsModule,
-        MatNativeDateModule,
         FormsModule,
         ReactiveFormsModule,
         HttpClientModule,
-        RouterTestingModule
+        RouterTestingModule,
+        CalendarModule,
+        ButtonModule,
+        MultiSelectModule,
+        AccordionModule,
+        RadioButtonModule,
+        ProgressBarModule,
+        ToastModule,
+        DropdownModule
       ],
       declarations: [ FactorPageComponent ],
       providers: [

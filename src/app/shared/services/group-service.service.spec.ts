@@ -8,8 +8,8 @@ describe('GroupServiceService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({imports: [
-      HttpClientModule
-    ],});
+      HttpClientModule,
+    ]});
     service = TestBed.inject(GroupServiceService);
   });
 

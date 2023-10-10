@@ -65,10 +65,6 @@
     <div *ngIf="graphics.length > 0">
       <p-accordion [multiple]="true">
         <p-accordionTab *ngFor="let item of graphics; let i = index" [header]="item.bar.title.text + ' ' + item.group" [selected]="true">
-          <!--<div class="radiobutton" *ngFor="let rep of representationType">
-            <p-radioButton  [inputId]="rep.name" name="rep" [value]="rep" [(ngModel)]="item.select" (onChange)="changeSelected(i, $event)"></p-radioButton>
-            <label class="label" [for]="rep.name">{{ rep.name }}</label>
-          </div>-->
           <div *ngIf="item.select.name == 'Bar Chart'" echarts [options]="item.bar" class="demo-chart"></div>
           <div *ngIf="item.select.name == 'Stacked Chart'" echarts [options]="item.stacked" class="demo-chart"></div>
         </p-accordionTab>
