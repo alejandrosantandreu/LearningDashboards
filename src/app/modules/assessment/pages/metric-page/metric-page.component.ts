@@ -242,10 +242,10 @@ export class MetricPageComponent implements OnInit {
   }
 
   getRat(ration: any) {
-    let aux = ration.split('\n')
-    let name1 = aux[2].slice(aux[2].indexOf('{') + 1, aux[2].indexOf('='))
-    let val1 = aux[2].slice(aux[2].indexOf('=') + 1, aux[2].indexOf(','))
-    let name2 = aux[2].slice(aux[2].indexOf(',') + 2)
+    //let aux = ration.split('\n')
+    let name1 = ration.slice(ration.indexOf('{') + 1, ration.indexOf('='))
+    let val1 = ration.slice(ration.indexOf('=') + 1, ration.indexOf(','))
+    let name2 = ration.slice(ration.indexOf(',') + 2)
     let val2 = name2.slice(name2.indexOf('=') + 1, name2.indexOf('}'))
     name2 = name2.slice(0, name2.indexOf('='))
 

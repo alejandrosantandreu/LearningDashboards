@@ -7,10 +7,6 @@ const routes: Routes = [
     loadChildren: () => import('@modules/assessment/assessment.module').then(m => m.AssessmentModule)
   },
   {
-    path: 'setting',
-    loadChildren: () => import('@modules/setting/setting.module').then(m => m.SettingModule)
-  },
-  {
     path: 'home',
     loadChildren: () => import('@modules/principal/principal.module').then(m => m.PrincipalModule)
   },
